@@ -3,7 +3,7 @@
 <head> 
 	<meta charset="UTF-8" />
     <title>Phaser - Making your first game, part 9</title>
-	<script type="text/javascript" src="./Phaser/build/phaser.min.js"></script>
+	<script type="text/javascript" src="../../Phaser/build/phaser.min.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -14,14 +14,14 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(400, 300, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(600, 500, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
 
-    game.load.image('sky', 'assets/sky.png');
-    game.load.image('ground', 'assets/platform.png');
-    game.load.image('star', 'assets/star.png');
-    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    game.load.image('sky', './assets/sky.png');
+    game.load.image('ground', './assets/platform.png');
+    game.load.image('star', './assets/star.png');
+    game.load.spritesheet('dude', './assets/dude.png', 32, 48);
 
 }
 
@@ -57,10 +57,10 @@ function create() {
     ground.body.immovable = true;
 
     //  Now let's create two ledges
-    var ledge = platforms.create(200, 200, 'ground');
+    var ledge = platforms.create(200, 325, 'ground');
     ledge.body.immovable = true;
 
-    ledge = platforms.create(-75, 125, 'ground');
+    ledge = platforms.create(-75, 150, 'ground');
     ledge.body.immovable = true;
 
     // The player and its settings
@@ -88,7 +88,7 @@ function create() {
     for (var i = 0; i < 12; i++)
     {
         //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 20, 0, 'star');
+        var star = stars.create(i * 35, 0, 'star');
 
         //  Let gravity do its thing
         star.body.gravity.y = 300;

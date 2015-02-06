@@ -16,14 +16,8 @@ RoBlockWar.Preloader.prototype = {
     this.load.setPreloadSprite(this.preloadBar);
 
     // load game assets
-<<<<<<< HEAD
-    this.load.image('sky', '../../assets/sky.png');
-    this.load.spritesheet('player', '../../assets/dude.png', 32, 48);
-=======
-    this.load.image('sky', '/assets/sky.png');
-    this.load.spritesheet('player', '/assets/dude.png', 32, 48);
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
-    
+    this.load.image('sky', '../assets/sky.png');
+    this.load.spritesheet('player', '../assets/dude.png', 32, 48);
   },
   create: function() {
     this.state.start('Game');

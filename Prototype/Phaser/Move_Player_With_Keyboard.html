@@ -2,8 +2,8 @@
 <html lang="en"> 
 <head> 
 	<meta charset="UTF-8" />
-    <title>Phaser - Making your first game, part 9</title>
-	<script type="text/javascript" src="../Phaser/build/phaser.min.js"></script>
+    <title>Phaser - Move Player With Keyboard</title>
+	<script type="text/javascript" src="../../Phaser/build/phaser.min.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -23,7 +23,7 @@ RoBlockWar.Boot = function(){};
 RoBlockWar.Boot.prototype = {
   preload: function() {
     //assets we'll use in the loading screen
-    this.load.image('preloadbar', '../assets/preloader-bar.png');
+    this.load.image('preloadbar', './assets/preloader-bar.png');
   },
   create: function() {
     //loading screen will have a white background
@@ -59,8 +59,8 @@ RoBlockWar.Preload.prototype = {
 
     //load game assets
     // this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.image('sky', '../assets/sky.png');
-    this.load.spritesheet('player', '../assets/dude.png', 32, 48);
+    this.load.image('sky', './assets/sky.png');
+    this.load.spritesheet('player', './assets/dude.png', 32, 48);
     
   },
   create: function() {

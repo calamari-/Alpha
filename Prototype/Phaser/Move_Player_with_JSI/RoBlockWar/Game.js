@@ -20,18 +20,12 @@ RoBlockWar.Game = function (game) {
     this.particles;	//	the particle manager
     this.physics;	//	the physics manager
     this.rnd;		//	the repeatable random number generator
-<<<<<<< HEAD
-    
-
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words',
     // i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-=======
 
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
 };
 
 RoBlockWar.Game.prototype = {
@@ -98,15 +92,3 @@ RoBlockWar.Game.prototype = {
 	}
 
 };
-<<<<<<< HEAD
-=======
-
-RoBlockWar.Game.prototype = {
-  create: function() {
-    
-  },
-  update: function() {
-    
-  }
-};
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804

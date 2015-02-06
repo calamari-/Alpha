@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Fixed Blockly</title>
-  <script src="../Blockly/blockly_compressed.js"></script>
-  <script src="../Blockly/blocks_compressed.js"></script>
-  <script src="../Blockly/msg/js/en.js"></script>
+  <script src="../../Blockly/blockly_compressed.js"></script>
+  <script src="../../Blockly/blocks_compressed.js"></script>
+  <script src="../../Blockly/msg/js/en.js"></script>
   <style>
     body {
       background-color: #fff;
@@ -22,8 +22,6 @@
 
   <p>This is a simple demo of injecting Blockly into a fixed-sized 'div' element.</p>
 
-  <p>More info on <a href="https://developers.google.com/blockly/installation/injecting-fixed-size">injecting fixed-sized Blockly</a>...</p>
-
   <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 
   <xml id="toolbox" style="display: none">
@@ -37,8 +35,7 @@
   </xml>
 
   <script>
-    Blockly.inject(document.getElementById('blocklyDiv'),
-        {toolbox: document.getElementById('toolbox')});
+    Blockly.inject(document.getElementById('blocklyDiv'), { toolbox: document.getElementById('toolbox')});
   </script>
 
 </body>

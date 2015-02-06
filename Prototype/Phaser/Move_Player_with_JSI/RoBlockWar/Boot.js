@@ -17,19 +17,11 @@ RoBlockWar.Boot.prototype = {
     
     //  This tells the game to resize the renderer to match the game dimensions (i.e. 100% browser width / height)
     this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-<<<<<<< HEAD
   },
     
   preload: function() {
     //assets we'll use in the loading screen
-    this.load.image('preloadbar', '../../assets/preloader-bar.png');
-=======
-  }
-    
-  preload: function() {
-    //assets we'll use in the loading screen
-    this.load.image('preloadbar', '/assets/preloader-bar.png');
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+    this.load.image('preloadbar', '../assets/preloader-bar.png');
   },
   create: function() {
     //  By this point the preloader assets have loaded to the cache, we've set the game settings

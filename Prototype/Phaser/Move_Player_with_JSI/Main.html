@@ -3,13 +3,8 @@
 <head> 
 	<meta charset="UTF-8" />
     <title>Move Square with JSI</title>
-<<<<<<< HEAD
-    <script type="text/javascript" src="../../JSInterpreter/acorn_interpreter.js"></script>
-	<script type="text/javascript" src="../../Phaser/build/phaser.min.js"></script>
-=======
-    <script type="text/javascript" src="../JSInterpreter/acorn_interpreter.js"></script>
-	<script type="text/javascript" src="../Phaser/build/phaser.min.js"></script>
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+    <script type="text/javascript" src="../../../JSInterpreter/acorn_interpreter.js"></script>
+	<script type="text/javascript" src="../../../Phaser/build/phaser.min.js"></script>
 	
 	<script type="text/javascript" src="./RoBlockWar/Boot.js"></script>
 	<script type="text/javascript" src="./RoBlockWar/Preloader.js"></script>
@@ -24,11 +19,9 @@
 <body>
 
 <script type="text/javascript" id="RoBlockWar_Main">
-<<<<<<< HEAD
-var global_roblockwar;
-=======
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+
 window.onload = function() {
+
 	//	100% of the browser window - see Boot.js for additional configuration
 	var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '');
 	//	Add the States your game has.
@@ -38,8 +31,8 @@ window.onload = function() {
 	game.state.add('Game', RoBlockWar.Game);
 	//	Now start the Boot state.
 	game.state.start('Boot');
-<<<<<<< HEAD
-	sleepFor(10000);
+
+	sleepFor(5000);
 	MovePlayer(game);
 	/*var myInterpreter = new Interpreter('');
 	try {
@@ -108,11 +101,5 @@ window.onload = function() {
 	}
 	
 </script>
-
-=======
-};
-</script>
-
->>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
 </body>
 </html>
