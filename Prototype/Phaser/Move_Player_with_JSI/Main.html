@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Move Square with JSI</title>
+<<<<<<< HEAD
+    <script type="text/javascript" src="../../JSInterpreter/acorn_interpreter.js"></script>
+	<script type="text/javascript" src="../../Phaser/build/phaser.min.js"></script>
+=======
+    <script type="text/javascript" src="../JSInterpreter/acorn_interpreter.js"></script>
+	<script type="text/javascript" src="../Phaser/build/phaser.min.js"></script>
+>>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+	
+	<script type="text/javascript" src="./RoBlockWar/Boot.js"></script>
+	<script type="text/javascript" src="./RoBlockWar/Preloader.js"></script>
+	<script type="text/javascript" src="./RoBlockWar/Game.js"></script>
+	
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript" id="RoBlockWar_Main">
+<<<<<<< HEAD
+var global_roblockwar;
+=======
+>>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+window.onload = function() {
+	//	100% of the browser window - see Boot.js for additional configuration
+	var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '');
+	//	Add the States your game has.
+	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+	game.state.add('Boot', RoBlockWar.Boot);
+	game.state.add('Preloader', RoBlockWar.Preloader);
+	game.state.add('Game', RoBlockWar.Game);
+	//	Now start the Boot state.
+	game.state.start('Boot');
+<<<<<<< HEAD
+	sleepFor(10000);
+	MovePlayer(game);
+	/*var myInterpreter = new Interpreter('');
+	try {
+        myInterpreter.run();
+      } finally {
+        alert('Finish!');
+      }*/
+};
+</script>
+
+<script type="text/javascript" id="RoBlockWar_CustomJS">
+	function sleepFor( sleepDuration ){
+	    var now = new Date().getTime();
+	    while(new Date().getTime() < (now + sleepDuration)){ /* do nothing */ } 
+	}
+	function MovePlayer(game){
+		var p = game.player;
+		game.player.body.velocity.x = 0;
+		game.player.body.velocity.y = 0;
+		var times = 10;
+		while(times > 0)
+		{
+			times = times - 1;
+			while(game.player.body.x < 50)
+			{ 
+				game.player.body.velocity.x = 50;
+	            game.player.animations.play('right');
+	            sleepFor(1000);
+			}
+			game.player.body.velocity.x = 0;
+			game.player.animations.stop();
+			game.player.frame = 4;
+			sleepFor(1000);
+			
+			while(game.player.body.y < 50)
+			{ 
+				game.player.body.velocity.y = 50;
+				sleepFor(1000);
+			}
+			game.player.body.velocity.y = 0;
+			game.player.animations.stop();
+			game.player.frame = 4;
+			sleepFor(1000);
+			
+			while(game.player.body.x > 50)
+			{ 
+				game.player.body.velocity.x = -50;
+				game.player.animations.play('left');
+				sleepFor(1000);
+			}
+			game.player.body.velocity.x = 0;
+			game.player.animations.stop();
+			game.player.frame = 4;
+			sleepFor(1000);
+			
+			while(game.player.body.y > 50)
+			{ 
+				game.player.body.velocity.y = -50;
+				sleepFor(1000);
+			}
+			game.player.body.velocity.y = 0;
+			game.player.animations.stop();
+			game.player.frame = 4;
+			sleepFor(1000);
+		}
+	}
+	
+</script>
+
+=======
+};
+</script>
+
+>>>>>>> ac9e9e9d9c71f660dbecf0b226bfc0592d30f804
+</body>
+</html>

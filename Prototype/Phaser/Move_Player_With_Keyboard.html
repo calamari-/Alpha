@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>Phaser - Making your first game, part 9</title>
+	<script type="text/javascript" src="../Phaser/build/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript" id="BootUp">
+
+// Define our 'namespace'
+var RoBlockWar = RoBlockWar ||  { };
+
+RoBlockWar.Boot = function(){};
+
+//setting game configuration and loading the assets for the loading screen
+RoBlockWar.Boot.prototype = {
+  preload: function() {
+    //assets we'll use in the loading screen
+    this.load.image('preloadbar', '../assets/preloader-bar.png');
+  },
+  create: function() {
+    //loading screen will have a white background
+    this.game.stage.backgroundColor = '#fff';
+
+    //scaling options
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
+
+    //physics system
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+    this.state.start('Preload');
+  }
+};
+
+</script>
+
+<script type="text/javascript" id="preload">
+
+var RoBlockWar = RoBlockWar || {};
+
+//loading the game assets
+RoBlockWar.Preload = function(){};
+
+RoBlockWar.Preload.prototype = {
+  preload: function() {
+    //show loading screen
+    this.preloadBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY + 128, 'preloadbar');
+    this.preloadBar.anchor.setTo(0.5);
+
+    this.load.setPreloadSprite(this.preloadBar);
+
+    //load game assets
+    // this.load.tilemap('level1', 'assets/tilemaps/level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.image('sky', '../assets/sky.png');
+    this.load.spritesheet('player', '../assets/dude.png', 32, 48);
+    
+  },
+  create: function() {
+    this.state.start('Game');
+  }
+};
+    
+</script>
+<script type="text/javascript" id="Game">
+var RoBlockWar = RoBlockWar || {};
+
+//title screen
+RoBlockWar.Game = function(){};
+
+RoBlockWar.Game.prototype = {
+  create: function() {
+    //  Our tiled scrolling background
+    this.land = this.game.add.sprite(0, 0, 'sky');
+
+ 
+
+    //create player
+    this.player = this.game.add.sprite(0, 0, 'player');
+    this.game.physics.arcade.enable(this.player);
+    
+    this.player.body.maxVelocity.setTo(400, 400);
+    this.player.body.collideWorldBounds = true;
+    
+    this.player.animations.add('left', [0, 1, 2, 3], 10, true);
+    this.player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+    //the camera will follow the player in the world
+    this.game.camera.follow(this.player);
+
+    //move player with cursor keys
+    this.cursors = this.game.input.keyboard.createCursorKeys();
+
+  },
+  update: function() {
+    //collision
+    this.game.physics.arcade.collide(this.player, this.blockedLayer);
+
+    //reset player movement
+    this.player.body.velocity.y = 0;
+    this.player.body.velocity.x = 0;
+
+    if(this.cursors.up.isDown) {
+      this.player.body.velocity.y -= 50;
+    }
+    else if(this.cursors.down.isDown) {
+      this.player.body.velocity.y += 50;
+    }
+    if(this.cursors.left.isDown) {
+      this.player.body.velocity.x -= 50;
+      this.player.animations.play('left');
+    }
+    else if(this.cursors.right.isDown) {
+      this.player.body.velocity.x += 50;
+      this.player.animations.play('right');
+    }
+    else
+    {
+        //  Stand still
+        this.player.animations.stop();
+
+        this.player.frame = 4;
+    }
+  }
+};
+    
+</script>
+
+<script type="text/javascript" id="main">
+var RoBlockWar = RoBlockWar || {};
+
+RoBlockWar.game = new Phaser.Game(160, 160, Phaser.AUTO, '');
+
+RoBlockWar.game.state.add('Boot', RoBlockWar.Boot);
+RoBlockWar.game.state.add('Preload', RoBlockWar.Preload);
+RoBlockWar.game.state.add('Game', RoBlockWar.Game);
+
+RoBlockWar.game.state.start('Boot');
+</script>
+
+</body>
+</html>

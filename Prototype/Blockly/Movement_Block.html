@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Fixed Blockly</title>
+  <script src="../Blockly/blockly_compressed.js"></script>
+  <script src="../Blockly/blocks_compressed.js"></script>
+  <script src="../Blockly/msg/js/en.js"></script>
+  <script src="../Blockly/javascript_compressed.js"></script>
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Blockly</h1>
+
+  <div id="blocklyDiv" style="height: 200px; width: 500px;"></div>
+  <input type="textarea" name="textarea" id="textarea" style="height: 200px; width: 500px; background-color: gray;" />
+
+  <xml id="toolbox" style="display: none">>
+    <block type="math_number"></block>
+    <block type="math_arithmetic"></block>
+    <block type="roblockwar_movement"></block>
+  </xml>
+  <script type="text/javascript" id="custom_block">
+  Blockly.Blocks['roblockwar_movement'] = {
+    init: function() {
+      this.setHelpUrl('http://www.example.com/');
+      this.setColour(65);
+      this.appendValueInput("Movement")
+          .setCheck("Number")
+          .appendField("Move")
+          .appendField(new Blockly.FieldDropdown([["Up", "UP"], ["Down", "Down"], ["Left", "LEFT"], ["Right", "RIGHT"]]), "Directions")
+          .appendField(" pixels");
+      this.setPreviousStatement(true, "null");
+      this.setNextStatement(true, "null");
+      this.setTooltip('');
+    }
+  };
+  Blockly.JavaScript['roblockwar_movement'] = function(block) {
+    var value_movement = Blockly.JavaScript.valueToCode(block, 'Movement', Blockly.JavaScript.ORDER_ATOMIC);
+    var dropdown_directions = block.getFieldValue('Directions');
+    var code = 'this.Move(\'' + dropdown_directions + '\', (' + value_movement + ') );';
+    return code;
+  };
+  </script>
+  <script>
+    Blockly.inject(document.getElementById('blocklyDiv'),
+        {toolbox: document.getElementById('toolbox')});
+    function myUpdateFunction() {
+      var code = Blockly.JavaScript.workspaceToCode();
+      document.getElementById('textarea').value = code;
+    }
+    Blockly.addChangeListener(myUpdateFunction);
+  </script>
+
+</body>
+</html>

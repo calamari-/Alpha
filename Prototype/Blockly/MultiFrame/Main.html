@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script>
+  var Workspaces = new Array();
+
+  function blocklyLoaded(blockly) {
+    // Called once Blockly is fully loaded.
+    blockly.index = '_' + Workspaces.length + '_';
+    Workspaces.push(blockly);
+    
+    var input = document.createElement("input");
+    input.id = ('code_' + blockly.index);
+    input.type = 'textarea';
+    input.value = 'Initialized';
+    document.getElementById("workspaceCode").appendChild(input);
+    
+    blockly.addChangeListener(function () {
+        for(var i = 0; i < Workspaces.length; i++) {
+          var code = Workspaces[i].JavaScript.workspaceToCode();
+          document.getElementById('code_' + Workspaces[i].index).value = code;  
+        }
+    });
+    
+    
+  }
+</script>
+    <iframe id="Player1" src="./frame.html" style="width:40%; display: inline-block;margin-right: 10%">
+    </iframe>
+    <iframe id="Player2" src="./frame.html" style="width:40%; display: inline-block;">
+    </iframe>
+    <br/>
+    <div id="workspaceCode" style="width: 80%; display: inline-block;">
+        
+    </div>
+</body>
+</html>
