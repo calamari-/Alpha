@@ -1,0 +1,9 @@
+[submodule "Blockly"]
+	path = Blockly
+	url = https://github.com/paulweatherby/blockly
+[submodule "Phaser"]
+	path = Phaser
+	url = https://github.com/paulweatherby/phaser
+[submodule "JSInterpreter"]
+	path = JSInterpreter
+	url = https://github.com/paulweatherby/JS-Interpreter
