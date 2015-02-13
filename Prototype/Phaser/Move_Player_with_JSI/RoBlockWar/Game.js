@@ -23,62 +23,42 @@ RoBlockWar.Game = function (game) {
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words',
     // i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
-
+    
     //	You can use any of these from any function within this State.
     //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 };
 
 RoBlockWar.Game.prototype = {
-
 	create: function () {
         //  Our tiled scrolling background
         this.land = this.game.add.sprite(0, 0, 'sky');
         
-        //create player
-        this.player = this.game.add.sprite(0, 0, 'player');
-        this.game.physics.arcade.enable(this.player);
+        //create players
+        for(var i = 0; i < this.game.Robots.length; i++)
+        {
+            var botView = this.game.add.sprite(25, 25, 'player');
+            this.game.physics.arcade.enable(botView);
+            
+            botView.body.maxVelocity.setTo(400, 400);
+            botView.body.collideWorldBounds = true;
+            
+            botView.animations.add('left', [0, 1, 2, 3], 10, true);
+            botView.animations.add('right', [5, 6, 7, 8], 10, true);
+            this.game.Robots[i].init(botView);
         
-        this.player.body.maxVelocity.setTo(400, 400);
-        this.player.body.collideWorldBounds = true;
-        
-        this.player.animations.add('left', [0, 1, 2, 3], 10, true);
-        this.player.animations.add('right', [5, 6, 7, 8], 10, true);
-        
-        //the camera will follow the player in the world
-        this.game.camera.follow(this.player);
-        
-        //move player with cursor keys
-        this.cursors = this.game.input.keyboard.createCursorKeys();
+    		var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer);
+    		this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
+    	}
+    	
+    	this.game.Scheduler.run(function () {
+    		console.log('done');
+    	});
 	},
 
 	update: function () {
-        //collision
-        this.game.physics.arcade.collide(this.player, this.blockedLayer);
-        
-        //reset player movement
-        this.player.body.velocity.y = 0;
-        this.player.body.velocity.x = 0;
-        
-        if(this.cursors.up.isDown) {
-            this.player.body.velocity.y -= 50;
-        }
-        else if(this.cursors.down.isDown) {
-            this.player.body.velocity.y += 50;
-        }
-        if(this.cursors.left.isDown) {
-            this.player.body.velocity.x -= 50;
-            this.player.animations.play('left');
-        }
-        else if(this.cursors.right.isDown) {
-            this.player.body.velocity.x += 50;
-            this.player.animations.play('right');
-        }
-        else
-        {
-            //  Stand still
-            this.player.animations.stop();
-        
-            this.player.frame = 4;
+        for(var i = 0; i < this.game.Robots.length; i++){
+            this.game.physics.arcade.collide(this.game.Robots[i].RobotPlayer, this.blockedLayer);
+            this.game.Robots[i].update();
         }
 	},
 
