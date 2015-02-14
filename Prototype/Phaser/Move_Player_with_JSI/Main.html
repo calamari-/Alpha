@@ -26,7 +26,7 @@
 <script type="text/javascript" id="RoBlockWar_CustomJS">
    window.onload = function(){
    		// alert(RoBlockWar_Robot_sampleCode.toString());
-   		RoBlockWar.Main([ "setRegister('SPEEDX', 0);setRegister('SPEEDY', 0); var times = 1000; while(times > 0) { times = times - 1;while(getRegister('SPEEDX') < 50) { setRegister('SPEEDX', 350); } setRegister('SPEEDX', 0); while(getRegister('SPEEDY') < 50) { setRegister('SPEEDY', 350); } setRegister('SPEEDY', 0); while(getRegister('SPEEDX') > 50) { setRegister('SPEEDX', -350); } setRegister('SPEEDX', 0); while(getRegister('Y') > 50) { setRegister('SPEEDY', -350); } setRegister('SPEEDY', 0); }" ]);
+   		RoBlockWar.Main([ "setRegister('SPEEDX', 0);setRegister('SPEEDY', 0); var times = 1000; while(times > 0) { times = times - 1;while(getRegister('X') < 450) { console.log('Trying to Move Right'); setRegister('SPEEDX', 350); } setRegister('SPEEDX', 0); while(getRegister('Y') < 450) { console.log('Trying to Move Down'); setRegister('SPEEDY', 350); } setRegister('SPEEDY', 0); while(getRegister('X') > 50) { console.log('Trying to Move Left'); setRegister('SPEEDX', -350); } setRegister('SPEEDX', 0); while(getRegister('Y') > 50) { console.log('Trying to Move Up'); setRegister('SPEEDY', -350); } setRegister('SPEEDY', 0); }" ]);
    };
 </script>
 </body>
