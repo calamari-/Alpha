@@ -26,7 +26,7 @@
 <script type="text/javascript" id="RoBlockWar_CustomJS">
    window.onload = function(){
    		// alert(RoBlockWar_Robot_sampleCode.toString());
-   		RoBlockWar.Main([ "this.Registers[this.RegisterNameMapping.SPEEDX] = 0;this.Registers[this.RegisterNameMapping.SPEEDY] = 0;var times = 10;while(times > 0){times = times - 1;while(this.Registers[this.RegisterNameMapping.X] < 50){ this.Registers[this.RegisterNameMapping.SPEEDX] = 300;this.sleepFor(1000);}this.Registers[this.RegisterNameMapping.SPEEDX] = 0;this.sleepFor(1000);while(this.Registers[this.RegisterNameMapping.Y] < 50){ this.Registers[this.RegisterNameMapping.SPEEDY] = 300;this.sleepFor(1000);}this.Registers[this.RegisterNameMapping.SPEEDY] = 0;this.sleepFor(1000);while(this.Registers[this.RegisterNameMapping.X] > 50){this.Registers[this.RegisterNameMapping.SPEEDX] = -300;this.sleepFor(1000);}this.Registers[this.RegisterNameMapping.SPEEDX] = 0;this.sleepFor(1000);while(this.Registers[this.RegisterNameMapping.Y] > 50){ this.Registers[this.RegisterNameMapping.SPEEDY] = -300;this.sleepFor(1000);}this.Registers[this.RegisterNameMapping.SPEEDY] = 0;this.sleepFor(1000);}" ]);
+   		RoBlockWar.Main([ "setRegister('SPEEDX', 0);setRegister('SPEEDY', 0); var times = 1000; while(times > 0) { times = times - 1;while(getRegister('SPEEDX') < 50) { setRegister('SPEEDX', 350); } setRegister('SPEEDX', 0); while(getRegister('SPEEDY') < 50) { setRegister('SPEEDY', 350); } setRegister('SPEEDY', 0); while(getRegister('SPEEDX') > 50) { setRegister('SPEEDX', -350); } setRegister('SPEEDX', 0); while(getRegister('Y') > 50) { setRegister('SPEEDY', -350); } setRegister('SPEEDY', 0); }" ]);
    };
 </script>
 </body>

@@ -36,7 +36,7 @@ RoBlockWar.Game.prototype = {
         //create players
         for(var i = 0; i < this.game.Robots.length; i++)
         {
-            var botView = this.game.add.sprite(25, 25, 'player');
+            var botView = this.game.add.sprite(250, 250, 'player');
             this.game.physics.arcade.enable(botView);
             
             botView.body.maxVelocity.setTo(400, 400);
@@ -46,12 +46,12 @@ RoBlockWar.Game.prototype = {
             botView.animations.add('right', [5, 6, 7, 8], 10, true);
             this.game.Robots[i].init(botView);
         
-    		var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer);
+    		var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer());
     		this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
     	}
     	
     	this.game.Scheduler.run(function () {
-    		console.log('done');
+    		alert('Game now Over');
     	});
 	},
 
