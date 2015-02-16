@@ -93,20 +93,12 @@ RoBlockWar_Robot.prototype.init = function(View){
 RoBlockWar_Robot.prototype.update = function(){
   
   // Update location phaser -> model
-  // console.log('this.RobotPlayer.body.x {' + this.RobotPlayer.body.x + '}');
-  /*if(this.getRegister('X') != this.RobotPlayer.body.x ||
-     this.getRegister('Y') != this.RobotPlayer.body.y)
-  { console.log('player at (' + this.RobotPlayer.body.x + ', ' + this.RobotPlayer.body.y + ')'); }
-  */
   this.Registers.setR('X', this.RobotPlayer.body.x);
   this.Registers.setR('Y', this.RobotPlayer.body.y);
   
   // update velocity model -> phase
   var newSpeedX = this.Registers.getR('SPEEDX') || 0;
   var newSpeedY = this.Registers.getR('SPEEDY') || 0;
-  if(newSpeedX != this.RobotPlayer.body.velocity.x ||
-     newSpeedY != this.RobotPlayer.body.velocity.y)
-  { console.log('player movement (' + newSpeedX + ', ' + newSpeedY + ')'); }
   this.RobotPlayer.body.velocity.x = newSpeedX;
   this.RobotPlayer.body.velocity.y = newSpeedY;
   
@@ -138,36 +130,7 @@ RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
     
     interpreter.setProperty(scope, 'Registers', helper.nativeValueToInterpreter(robot.Registers));
     interpreter.setProperty(scope, 'console', helper.nativeValueToInterpreter(window.console));
-    
-    
-    var wrap_sleep = function(time) {
-      return interpreter.createPrimitive(robot.sleepFor(time));
-    };
-    interpreter.setProperty(scope, 'sleepFor', interpreter.createNativeFunction(wrap_sleep));
-    
-    /*
-    var wrap_getReg = function(Reg) {
-      return interpreter.createPrimitive(RoBlockWar_GetRegister(Reg));
-    };
-    interpreter.setProperty(scope, 'getRegister', interpreter.createNativeFunction(wrap_getReg));
-    
-    var wrap_setReg = function(Reg, Val) {
-      return interpreter.createPrimitive(RoBlockWar_SetRegister(Reg, Val));
-    };
-    interpreter.setProperty(scope, 'setRegister', interpreter.createNativeFunction(wrap_setReg));
-    */
-    
-    var wrap_alert = function(text) {
-      text = text ? text.toString() : '';
-      return interpreter.createPrimitive(alert(text));
-    };
-    interpreter.setProperty(scope, 'alert', interpreter.createNativeFunction(wrap_alert));
   };
-};
-
-RoBlockWar_Robot.prototype.sleepFor = function( sleepDuration ){
-  var now = new Date().getTime();
-  while(new Date().getTime() < (now + sleepDuration)){ /* do nothing */ } 
 };
 
 function RoBlockWar_Robot_sampleCode() 

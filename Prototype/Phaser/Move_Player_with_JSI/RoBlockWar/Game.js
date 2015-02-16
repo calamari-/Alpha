@@ -52,7 +52,6 @@ RoBlockWar.Game.prototype = {
     	
     	this.game.Scheduler.run(function () {
     		alert('Game now Over');
-    		console.log = null;
     	});
 	},
 
