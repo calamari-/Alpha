@@ -26,7 +26,7 @@
 <script type="text/javascript" id="RoBlockWar_CustomJS">
    window.onload = function(){
    		// alert(RoBlockWar_Robot_sampleCode.toString());
-   		RoBlockWar.Main([ document.getElementById('CodeToRun').innerHTML ]);
+   		RoBlockWar.Main([ document.getElementById('CodeToRun').innerHTML, document.getElementById('CodeToRun').innerHTML ]);
    };
 </script>
 <script type="text/javascript" id="CodeToRun">
@@ -38,25 +38,21 @@
         times = times - 1;
         while(Registers.getR('X') < 450)
         {
-            console.log('Trying to Move Right');
             Registers.setR('SPEEDX', 350);
         }
         Registers.setR('SPEEDX', 0);
         while(Registers.getR('Y') < 450)
         {
-            console.log('Trying to Move Down');
             Registers.setR('SPEEDY', 350);
         }
         Registers.setR('SPEEDY', 0);
         while(Registers.getR('X') > 50)
         {
-            console.log('Trying to Move Left');
             Registers.setR('SPEEDX', -350);
         }
         Registers.setR('SPEEDX', 0);
         while(Registers.getR('Y') > 50)
         {
-            console.log('Trying to Move Up');
             Registers.setR('SPEEDY', -350);
         }
         Registers.setR('SPEEDY', 0);

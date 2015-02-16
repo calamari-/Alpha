@@ -36,7 +36,7 @@ RoBlockWar.Game.prototype = {
         //create players
         for(var i = 0; i < this.game.Robots.length; i++)
         {
-            var botView = this.game.add.sprite(250, 250, 'player');
+            var botView = this.game.add.sprite(250 + (10 * i), 250, 'player');
             this.game.physics.arcade.enable(botView);
             
             botView.body.maxVelocity.setTo(400, 400);
@@ -56,7 +56,13 @@ RoBlockWar.Game.prototype = {
 	},
 
 	update: function () {
+	    var startWith = (this.time.totalElapsedSeconds() % this.game.Robots.length) / 100;
+	    
         for(var i = 0; i < this.game.Robots.length; i++){
+            this.game.physics.arcade.collide(this.game.Robots[i].RobotPlayer, this.blockedLayer);
+            this.game.Robots[i].update();
+        }
+        for(var i = 0; i < startWith; i++){
             this.game.physics.arcade.collide(this.game.Robots[i].RobotPlayer, this.blockedLayer);
             this.game.Robots[i].update();
         }

@@ -132,33 +132,3 @@ RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
     interpreter.setProperty(scope, 'console', helper.nativeValueToInterpreter(window.console));
   };
 };
-
-function RoBlockWar_Robot_sampleCode() 
-{
-  setRegister('SPEEDX', 0);
-  setRegister('SPEEDY', 0);
-  var times = 10000;
-  while(times > 0) {
-    times = times - 1;
-    while(getRegister('X') < 450) {
-      console.log('Trying to Move Right');
-      setRegister('SPEEDX', 350);
-    }
-    setRegister('SPEEDX', 0);
-    while(getRegister('Y') < 450) {
-      console.log('Trying to Move Down');
-      setRegister('SPEEDY', 350);
-    }
-    setRegister('SPEEDY', 0);
-    while(getRegister('X') > 50) {
-      console.log('Trying to Move Left');
-      setRegister('SPEEDX', -350);
-    }
-    setRegister('SPEEDX', 0);
-    while(getRegister('Y') > 50) {
-      console.log('Trying to Move Up');
-      setRegister('SPEEDY', -350);
-    }
-    setRegister('SPEEDY', 0);
-  }
-}
