@@ -5,9 +5,84 @@ function RoBlockWar_Robot(processId, robotName, userCode){
   this.RobotPlayer = null;
   this.RobotName = robotName;
   this.CodeToRun = userCode;
-  this.Registers = [];
+  this.Registers = {
+    _regs: [],
+    setR: function(Reg, Val){
+      if(Val === undefined)
+      { return; }
+      
+      switch (Reg) {
+        case 'A':
+          this._regs[24] = Val;
+          break;
+        case 1:
+          this._regs[1] = Val;
+          break;
+        case 'X':
+          this._regs[24] = Val;
+          break;
+        case 24:
+          this._regs[24] = Val;
+          break;
+        case 'Y':
+          this._regs[25] = Val;
+          break;
+        case 25:
+          this._regs[25] = Val;
+          break;
+        case 'SPEEDX':
+          this._regs[31] = Val;
+          break;
+        case 31:
+          this._regs[31] = Val;
+          break;
+        case 'SPEEDY':
+          this._regs[32] = Val;
+          break;
+        case 32:
+          this._regs[32] = Val;
+          break;
+      }
+    },
+    getR: function(Reg){
+      var val = null;
+      switch (Reg) {
+        case 'A':
+          val = this._regs[1];
+          break;
+        case 1:
+          val = this._regs[1];
+          break;
+        case 'X':
+          val = this._regs[24];
+          break;
+        case 24:
+          val = this._regs[24];
+          break;
+        case 'Y':
+          val = this._regs[25];
+          break;
+        case 25:
+          val = this._regs[25];
+          break;
+        case 'SPEEDX':
+          val = this._regs[31];
+          break;
+        case 31:
+          val = this._regs[31];
+          break;
+        case 'SPEEDY':
+          val = this._regs[32];
+          break;
+        case 32:
+          val = this._regs[32];
+          break;
+      }
+      return val;
+    }
+  };
   for(var i = 0; i <= 34; i++){
-    this.Registers[i] = 0;
+    this.Registers.setR(i, 0);
   }
 }
 
@@ -18,31 +93,33 @@ RoBlockWar_Robot.prototype.init = function(View){
 RoBlockWar_Robot.prototype.update = function(){
   
   // Update location phaser -> model
-  if(this.getRegister('X') != this.RobotPlayer.body.x ||
+  // console.log('this.RobotPlayer.body.x {' + this.RobotPlayer.body.x + '}');
+  /*if(this.getRegister('X') != this.RobotPlayer.body.x ||
      this.getRegister('Y') != this.RobotPlayer.body.y)
   { console.log('player at (' + this.RobotPlayer.body.x + ', ' + this.RobotPlayer.body.y + ')'); }
-  this.setRegister('X', this.RobotPlayer.body.x);
-  this.setRegister('Y', this.RobotPlayer.body.y);
+  */
+  this.Registers.setR('X', this.RobotPlayer.body.x);
+  this.Registers.setR('Y', this.RobotPlayer.body.y);
   
   // update velocity model -> phase
-  var newSpeedX = this.getRegister('SPEEDX') || 0;
-  var newSpeedY = this.getRegister('SPEEDY') || 0;
+  var newSpeedX = this.Registers.getR('SPEEDX') || 0;
+  var newSpeedY = this.Registers.getR('SPEEDY') || 0;
   if(newSpeedX != this.RobotPlayer.body.velocity.x ||
      newSpeedY != this.RobotPlayer.body.velocity.y)
   { console.log('player movement (' + newSpeedX + ', ' + newSpeedY + ')'); }
   this.RobotPlayer.body.velocity.x = newSpeedX;
   this.RobotPlayer.body.velocity.y = newSpeedY;
   
-  if(this.RobotPlayer.body.velocity.y > 0) {
+  if(this.RobotPlayer.body.velocity.y < 0) {
     this.RobotPlayer.animations.play('up');
   }
-  else if(this.RobotPlayer.body.velocity.y < 0) {
+  else if(this.RobotPlayer.body.velocity.y > 0) {
     this.RobotPlayer.animations.play('down');
   }
-  if(this.RobotPlayer.body.velocity.x > 0) {
+  if(this.RobotPlayer.body.velocity.x < 0) {
     this.RobotPlayer.animations.play('left');
   }
-  else if(this.RobotPlayer.body.velocity.x < 0) {
+  else if(this.RobotPlayer.body.velocity.x > 0) {
     this.RobotPlayer.animations.play('right');
   }
   
@@ -59,24 +136,26 @@ RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
   var robot = this;
   return function (interpreter, scope, helper) {
     
-    // interpreter.setProperty(scope, 'Registers', interpreter.createPrimitive(robot.Registers));
-    // interpreter.setProperty(scope, 'RegisterNameMapping', interpreter.createPrimitive(robot.RegisterNameMapping));
+    interpreter.setProperty(scope, 'Registers', helper.nativeValueToInterpreter(robot.Registers));
     interpreter.setProperty(scope, 'console', helper.nativeValueToInterpreter(window.console));
+    
     
     var wrap_sleep = function(time) {
       return interpreter.createPrimitive(robot.sleepFor(time));
     };
     interpreter.setProperty(scope, 'sleepFor', interpreter.createNativeFunction(wrap_sleep));
     
+    /*
     var wrap_getReg = function(Reg) {
-      return interpreter.createPrimitive(robot.getRegister(Reg));
+      return interpreter.createPrimitive(RoBlockWar_GetRegister(Reg));
     };
     interpreter.setProperty(scope, 'getRegister', interpreter.createNativeFunction(wrap_getReg));
     
     var wrap_setReg = function(Reg, Val) {
-      return interpreter.createPrimitive(robot.setRegister(Reg, Val));
+      return interpreter.createPrimitive(RoBlockWar_SetRegister(Reg, Val));
     };
     interpreter.setProperty(scope, 'setRegister', interpreter.createNativeFunction(wrap_setReg));
+    */
     
     var wrap_alert = function(text) {
       text = text ? text.toString() : '';
@@ -89,60 +168,6 @@ RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
 RoBlockWar_Robot.prototype.sleepFor = function( sleepDuration ){
   var now = new Date().getTime();
   while(new Date().getTime() < (now + sleepDuration)){ /* do nothing */ } 
-};
-
-RoBlockWar_Robot.prototype.setRegister = function(Reg, val){
-  //console.log('Setting {' + Reg + '} to {' + val + '}');
-  switch (Reg) {
-    case 'A':
-    case 1:
-      this.Registers[1] = val;
-      break;
-    case 'X':
-    case 24:
-      this.Registers[24] = val;
-      break;
-    case 'Y':
-    case 25:
-      this.Registers[25] = val;
-      break;
-    case 'SPEEDX':
-    case 31:
-      this.Registers[31] = val;
-      break;
-    case 'SPEEDY':
-    case 32:
-      this.Registers[32] = val;
-      break;
-  }
-};
-
-RoBlockWar_Robot.prototype.getRegister = function(Reg){
-  var val = null;
-  switch (Reg) {
-    case 'A':
-    case 1:
-      val = this.Registers[1];
-      break;
-    case 'X':
-    case 24:
-      val = this.Registers[24];
-      break;
-    case 'Y':
-    case 25:
-      val = this.Registers[25];
-      break;
-    case 'SPEEDX':
-    case 31:
-      val = this.Registers[31];
-      return;
-    case 'SPEEDY':
-    case 32:
-      val = this.Registers[32];
-      break;
-  }
-  // console.log('getting {' + Reg + '} currently {' + val + '}');
-  return val;
 };
 
 function RoBlockWar_Robot_sampleCode() 

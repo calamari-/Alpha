@@ -52,6 +52,7 @@ RoBlockWar.Game.prototype = {
     	
     	this.game.Scheduler.run(function () {
     		alert('Game now Over');
+    		console.log = null;
     	});
 	},
 
@@ -68,7 +69,7 @@ RoBlockWar.Game.prototype = {
 		//	Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
 		//	Then let's go back to the main menu.
-		this.state.start('MainMenu');
+		this.state.shutDown();
 	}
 
 };
