@@ -1,0 +1,143 @@
+* {
+    padding:0;
+    margin:0;
+}
+html, body {
+    height: 100%;
+    color: #fff;
+}
+
+#page
+{
+    border: 1px solid white;
+    margin: 0;
+    padding: 30px;
+    border-radius: 25px;
+    background: black;
+    color: white;
+    font-family: 'Lucida Console', 'Arial';
+    font-variant: small-caps;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+#SplashScreen
+{
+    margin: auto auto;
+    width: 50%;
+    min-width: 800px;
+}
+
+#SpashScreenBorder
+{
+    border: 2px solid white;
+    padding: 0px 30px 0px 5px;
+}
+
+#SpashScreenBorder h1 sup
+{
+    font-size: 40%;
+}
+
+#SpashScreenBorder #RobbieLogo
+{
+    float: right;
+    width: 40%;
+}
+
+#CopyrightBorder
+{
+    background: black;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    position: relative;
+    top: -22px;
+    display: inline-block;
+    text-align: center;
+    padding: 0px 30px 0px 5px;
+}
+
+#CopyrightBorder h2
+{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+#Company
+{
+    display: inline-block;
+    position: relative;
+    top: -22px;
+    left: -15px;
+}
+
+#Company h1
+{
+    display: inline-block;    
+    background: black;
+    font-Size: 4em;
+    padding: 3px;
+    margin: 0;
+}
+
+#Company p
+{
+    display: inline-block;    
+}
+
+#MainMenu
+{
+    text-align: center;
+    width: 60%;
+    margin: auto auto;
+}
+
+#SubMenu
+{
+    text-align: left;
+    width: 60%;
+    margin: auto auto;
+}
+
+#MainMenu ol
+{
+    display: inline-block;
+    text-align: left;
+}
+
+#MainMenu ol,
+#SubMenu ol
+{
+    display: inline-block;
+    text-align: left;
+}
+
+#MainMenu ol li a,
+#SubMenu ol li a
+{
+    text-decoration: none;
+    color: white;
+}
+
+#Documentation
+{
+    width: 60%;
+    margin: auto auto;
+}
+
+#Documentation h1
+{
+    text-align: center;
+}
+
+#Documentation p
+{
+    padding-left: 20px;
+    text-align: justify;
+}
+
+.clear
+{
+    clear: both;
+}
