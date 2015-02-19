@@ -29,6 +29,6 @@ Blockly.JavaScript['roblockwar_if_condition'] = function(block) {
   var dropdown_operator = block.getFieldValue('Operator');
   var statements_command = Blockly.JavaScript.statementToCode(block, 'command');
   
-  var code = 'if( (' + value_left_operand + ') ' + dropdown_operator + ' (' + value_right_operand + ') ) { ' + statements_command + ' } ';
+  var code = 'if( (' + value_left_operand + ') ' + dropdown_operator + ' (' + value_right_operand + ') ) ' + statements_command ;
   return code;
 };

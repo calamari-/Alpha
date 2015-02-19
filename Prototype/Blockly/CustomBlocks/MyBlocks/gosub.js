@@ -16,6 +16,6 @@ Blockly.Blocks['roblockwar_gosub'] = {
 Blockly.JavaScript['roblockwar_gosub'] = function(block) {
   var text_statename = block.getFieldValue('StateName');
   
-  var code = 'state_stack.push(\'0\'); state_stack.push(\'' + text_statename + '\'); break;';
+  var code = '{ state_stack.push(\'rtn_sub_' + block.id + '_\'); state_stack.push(\'' + text_statename + '\'); break; } case \'rtn_sub_' + block.id + '_\': ';
   return code;
 };
