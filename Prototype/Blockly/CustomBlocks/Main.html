@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Custom RoBlockWar Blocks</title>
+  <script src="./bin/blockly_compressed.js"></script>
+  <script src="./bin/blocks_compressed.js"></script>
+  <script src="./bin/en.js"></script>
+  <script src="./bin/javascript_compressed.js"></script>
+
+  <script src="./MyBlocks/main.js"></script>
+  <script src="./MyBlocks/state.js"></script>
+  <script src="./MyBlocks/ifCondition.js"></script>
+  <script src="./MyBlocks/goto.js"></script>
+  <script src="./MyBlocks/gosub.js"></script>
+  <script src="./MyBlocks/endsub.js"></script>
+  
+  <script src="./MyBlocks/getRegister.js"></script>
+  <script src="./MyBlocks/setRegister.js"></script>
+  <script src="./MyBlocks/shoot.js"></script>
+  <script src="./MyBlocks/radarPulse.js"></script>
+  
+  <style>
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+  </style>
+</head>
+<body>
+  <div style="height: 500px;width: 45%; float:left;">
+    <h1>Blockly Custom Workstation</h1>
+    <div id="blocklyDiv" style="height: 97%; width: 97%;"></div>
+  </div>
+  <div style="height: 500px;width: 45%; float:right;">
+    <h1>Code Generated from Workspace:</h1>
+    <textarea name="textarea" id="textarea" style="height: 97%; width: 97%;border: 1px solid black;" ></textarea>  
+  </div>
+  <br style="clear:both;"/>
+  <br style="clear:both;"/>
+  <hr/>
+  <xml id="toolbox" style="display: none">
+    <category name="Basic Controls">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+    </category>
+    <category name="Structure">
+      <block type="roblockwar_state"></block>
+      <block type="roblockwar_if_condition"></block>
+      <block type="roblockwar_goto"></block>
+      <block type="roblockwar_gosub"></block>
+      <block type="roblockwar_endsub"></block>
+    </category>
+    <category name="Commands">
+      <block type="roblockwar_getRegister"></block>
+      <block type="roblockwar_setRegister"></block>
+      <block type="roblockwar_shoot"></block>
+      <block type="roblockwar_radarPulse"></block>
+    </category>
+  </xml>
+  <xml id="DefaultWorkSpace" style="display:none;">
+    <xml xmlns="http://www.w3.org/1999/xhtml">
+      <block type="roblockwar_main" id="4" inline="false" x="7" y="59">
+      </block>
+    </xml>
+  </xml>
+  
+  <script type="text/javascript" id="run_webpage_code" >
+    Blockly.inject(document.getElementById('blocklyDiv'),
+        {toolbox: document.getElementById('toolbox')});
+    function myUpdateFunction() {
+      var code = Blockly.JavaScript.workspaceToCode();
+      var newline = String.fromCharCode(13, 10);
+      code = code.replace("}", "}" + newline).replace(";", ";" + newline).replace("{", "{" + newline);
+      document.getElementById('textarea').value = code;
+    }
+    Blockly.addChangeListener(myUpdateFunction);
+    var xml_text = document.getElementById('DefaultWorkSpace').innerHTML;
+    var xml = Blockly.Xml.textToDom(xml_text);
+    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+  </script>
+  
+</body>
+</html>
