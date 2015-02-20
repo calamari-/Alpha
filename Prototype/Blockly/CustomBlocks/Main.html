@@ -10,6 +10,7 @@
 
   <script src="./MyBlocks/main.js"></script>
   <script src="./MyBlocks/state.js"></script>
+  <script src="./MyBlocks/comment.js"></script>
   <script src="./MyBlocks/ifCondition.js"></script>
   <script src="./MyBlocks/goto.js"></script>
   <script src="./MyBlocks/gosub.js"></script>
@@ -38,15 +39,16 @@
   </div>
   <div style="height: 500px;width: 45%; float:right;">
     <h1>Code Generated from Workspace:</h1>
-    <textarea name="textarea" id="textarea" style="height: 97%; width: 97%;border: 1px solid black;" ></textarea>  
+    <pre><code id="textarea" style="height: 97%; width: 97%;" ></code></pre>
   </div>
   <br style="clear:both;"/>
   <br style="clear:both;"/>
   <hr/>
   <xml id="toolbox" style="display: none">
-    <category name="Basic Controls">
-      <block type="math_number"></block>
-      <block type="math_arithmetic"></block>
+    <category name="Math and Comments">
+    <block type="math_number"></block>
+    <block type="math_arithmetic"></block>
+    <block type="roblockwar_comment"></block>
     </category>
     <category name="Structure">
       <block type="roblockwar_state"></block>
@@ -68,15 +70,20 @@
       </block>
     </xml>
   </xml>
-  
-  <script type="text/javascript" id="run_webpage_code" >
+  <script type="text/javascript" id="run_webpage_code">
+    function replaceAll(find, replace, str) {
+      return str.replace(new RegExp(find, 'g'), replace);
+    }
     Blockly.inject(document.getElementById('blocklyDiv'),
         {toolbox: document.getElementById('toolbox')});
     function myUpdateFunction() {
       var code = Blockly.JavaScript.workspaceToCode();
-      var newline = String.fromCharCode(13, 10);
-      code = code.replace("}", "}" + newline).replace(";", ";" + newline).replace("{", "{" + newline);
-      document.getElementById('textarea').value = code;
+      var newline = String.fromCharCode(13, 10) || '\n';
+      code = replaceAll("}", "}" + newline, code);
+      code = replaceAll(":", ":" + newline, code);
+      code = replaceAll(";", ";" + newline, code);
+      code = replaceAll("{", "{" + newline, code);
+      document.getElementById('textarea').innerText = code;
     }
     Blockly.addChangeListener(myUpdateFunction);
     var xml_text = document.getElementById('DefaultWorkSpace').innerHTML;

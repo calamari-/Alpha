@@ -5,9 +5,9 @@ Blockly.Blocks['roblockwar_gosub'] = {
         .appendField("SubCall:")
         .appendField(new Blockly.FieldTextInput(""), "StateName");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",
+    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
                                      "roblockwar_shoot", "roblockwar_gosub"]);
-    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot",
+    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",  "roblockwar_comment", "roblockwar_shoot",
                                  "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub"]);
     this.setTooltip('Go to SubCall and then return here');
   }

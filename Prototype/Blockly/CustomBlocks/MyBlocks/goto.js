@@ -5,7 +5,7 @@ Blockly.Blocks['roblockwar_goto'] = {
         .appendField("Go to:")
         .appendField(new Blockly.FieldTextInput(""), "StateName");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",
+    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
                                      "roblockwar_shoot", "roblockwar_gosub"]);
     this.setTooltip('Jump to State');
   }

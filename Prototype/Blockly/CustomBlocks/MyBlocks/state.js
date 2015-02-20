@@ -5,11 +5,11 @@ Blockly.Blocks['roblockwar_state'] = {
         .appendField("State Name:")
         .appendField(new Blockly.FieldTextInput(""), "StateName");
     this.appendStatementInput("commands")
-        .setCheck(["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot",  
+        .setCheck(["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot", "roblockwar_comment",
                    "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub"]);
     this.setInputsInline(true);
-    this.setPreviousStatement(true, "roblockwar_state");
-    this.setNextStatement(true, "roblockwar_state");
+    this.setPreviousStatement(true, ["roblockwar_state",  "roblockwar_comment"]);
+    this.setNextStatement(true, ["roblockwar_state",  "roblockwar_comment"]);
     this.setTooltip('A Collection of Commands');
   }
 };

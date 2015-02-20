@@ -10,9 +10,9 @@ Blockly.Blocks['roblockwar_setRegister'] = {
                                                 ["SPEEDY","SPEEDY"],
                                                 ["DAMAGE", "DAMAGE"]]), "RegisterName");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",
+    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
                                      "roblockwar_shoot", "roblockwar_gosub"]);
-    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot",
+    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",  "roblockwar_comment", "roblockwar_shoot",
                                  "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub"]);
     this.setTooltip('Save Value to Register');
   }

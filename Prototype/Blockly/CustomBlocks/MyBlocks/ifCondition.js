@@ -7,17 +7,18 @@ Blockly.Blocks['roblockwar_if_condition'] = {
         .setCheck("Number");
     this.appendValueInput("right_operand")
         .setCheck("Number")
-        .appendField(new Blockly.FieldDropdown([["Greater Than", ">"], ["Greater Than or Equal", ">="],
-                                                ["Equals", "=="], ["Not Equals", "!="],
-                                                ["Less Than or Equal", "<="], ["Less Than", "<"]]), "Operator");
+        .appendField(new Blockly.FieldDropdown([["Greater Than", ">"],
+                                                ["Equals", "=="],
+                                                ["Not Equal to", "!="],
+                                                ["Less Than", "<"]]), "Operator");
     this.appendStatementInput("command")
         .setCheck(["roblockwar_setRegister", "roblockwar_shoot", 
                    "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub" ])
         .appendField("Then");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",
+    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
                                      "roblockwar_shoot", "roblockwar_gosub"]);
-    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot",
+    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_shoot", "roblockwar_comment",
                                  "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub"]);
     this.setTooltip('Simplified if Statement');
   }
