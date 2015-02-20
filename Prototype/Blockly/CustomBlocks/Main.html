@@ -83,7 +83,7 @@
       code = replaceAll(":", ":" + newline, code);
       code = replaceAll(";", ";" + newline, code);
       code = replaceAll("{", "{" + newline, code);
-      document.getElementById('textarea').innerText = code;
+      document.getElementById('textarea').innerHTML = code;
     }
     Blockly.addChangeListener(myUpdateFunction);
     var xml_text = document.getElementById('DefaultWorkSpace').innerHTML;
