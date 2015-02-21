@@ -3,17 +3,50 @@ Blockly.Blocks['roblockwar_setRegister'] = {
     this.setColour(20);
     this.appendValueInput("RegisterValue")
         .setCheck("Number")
-        .appendField("Set Register:")
-        .appendField(new Blockly.FieldDropdown([["X", "X"],
-                                                ["Y", "Y"],
-                                                ["SPEEDX", "SPEEDX"],
-                                                ["SPEEDY","SPEEDY"],
-                                                ["DAMAGE", "DAMAGE"]]), "RegisterName");
+        .appendField("Set ")
+        .appendField(new Blockly.FieldDropdown([["SPEEDX", "SPEEDX"],
+                                                ["SPEEDY", "SPEEDY"],
+                                                ["AIM", "AIM"],
+                                                ["INDEX", "INDEX"],
+                                                ["RANDOM", "RANDOM"],
+                                                ["A", "A"],
+                                                ["B", "B"],
+                                                ["C", "C"],
+                                                ["D", "D"],
+                                                ["E", "E"],
+                                                ["F", "F"],
+                                                ["G", "G"],
+                                                ["H", "H"],
+                                                ["I", "I"],
+                                                ["J", "J"],
+                                                ["K", "K"],
+                                                ["L", "L"],
+                                                ["M", "M"],
+                                                ["N", "N"],
+                                                ["O", "O"],
+                                                ["P", "P"],
+                                                ["Q", "Q"],
+                                                ["R", "R"],
+                                                ["S", "S"],
+                                                ["T", "T"],
+                                                ["U", "U"],
+                                                ["V", "V"],
+                                                ["W", "W"],
+                                                ["Z", "Z"]]), "RegisterName")
+        .appendField(" to ");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
-                                     "roblockwar_shoot", "roblockwar_gosub"]);
-    this.setNextStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister",  "roblockwar_comment", "roblockwar_shoot",
-                                 "roblockwar_goto", "roblockwar_gosub", "roblockwar_endsub"]);
+    this.setPreviousStatement(true, ["roblockwar_gosub",
+                                     "roblockwar_fire",
+                                     "roblockwar_if",
+                                     "roblockwar_label",
+                                     "roblockwar_setRegister"]);
+    this.setNextStatement(true, ["roblockwar_endsub",
+                                 "roblockwar_fire",
+                                 "roblockwar_gosub",
+                                 "roblockwar_goto",
+                                 "roblockwar_if",
+                                 "roblockwar_label",
+                                 "roblockwar_setRegister"]);
     this.setTooltip('Save Value to Register');
   }
 };

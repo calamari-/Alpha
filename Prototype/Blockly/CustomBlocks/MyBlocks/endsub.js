@@ -4,8 +4,12 @@ Blockly.Blocks['roblockwar_endsub'] = {
     this.appendDummyInput()
         .appendField("EndSub");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, ["roblockwar_if_condition", "roblockwar_setRegister", "roblockwar_comment",
-                                     "roblockwar_shoot", "roblockwar_gosub"]);
+    this.setPreviousStatement(true, ["roblockwar_fire",
+                                     "roblockwar_gosub",
+                                     "roblockwar_goto",
+                                     "roblockwar_if",
+                                     "roblockwar_label",
+                                     "roblockwar_setRegister"]);
     this.setTooltip('End a SubCall');
   }
 };

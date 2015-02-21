@@ -1,9 +1,9 @@
-Blockly.Blocks['roblockwar_gosub'] = {
+Blockly.Blocks['roblockwar_fire'] = {
   init: function() {
-    this.setColour(285);
-    this.appendDummyInput()
-        .appendField("SubCall:")
-        .appendField(new Blockly.FieldTextInput(""), "LabelName");
+    this.setColour(315);
+    this.appendValueInput("BlastDelay")
+        .setCheck("Number")
+        .appendField("Shoot at Distance:");
     this.setInputsInline(true);
     this.setPreviousStatement(true, ["roblockwar_gosub",
                                      "roblockwar_fire",
@@ -17,13 +17,12 @@ Blockly.Blocks['roblockwar_gosub'] = {
                                  "roblockwar_if",
                                  "roblockwar_label",
                                  "roblockwar_setRegister"]);
-    this.setTooltip('Go to SubCall and then return here');
+    this.setTooltip('');
   }
 };
 
-Blockly.JavaScript['roblockwar_gosub'] = function(block) {
-  var text_labelname = block.getFieldValue('LabelName');
-  
-  var code = '{ state_stack.push(\'rtn_sub_' + block.id + '_\'); state_stack.push(\'' + text_labelname + '\'); break; } case \'rtn_sub_' + block.id + '_\': ';
+Blockly.JavaScript['roblockwar_fire'] = function(block) {
+  var value_blastdelay = Blockly.JavaScript.valueToCode(block, 'BlastDelay', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = 'shootAtDistance(' + value_blastdelay + ');';
   return code;
 };

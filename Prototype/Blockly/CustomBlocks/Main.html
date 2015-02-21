@@ -8,18 +8,16 @@
   <script src="./bin/en.js"></script>
   <script src="./bin/javascript_compressed.js"></script>
 
-  <script src="./MyBlocks/main.js"></script>
-  <script src="./MyBlocks/state.js"></script>
-  <script src="./MyBlocks/comment.js"></script>
-  <script src="./MyBlocks/ifCondition.js"></script>
-  <script src="./MyBlocks/goto.js"></script>
-  <script src="./MyBlocks/gosub.js"></script>
   <script src="./MyBlocks/endsub.js"></script>
-  
+  <script src="./MyBlocks/fire.js"></script>
   <script src="./MyBlocks/getRegister.js"></script>
+  <script src="./MyBlocks/gosub.js"></script>
+  <script src="./MyBlocks/goto.js"></script>
+  <script src="./MyBlocks/if.js"></script>
+  <script src="./MyBlocks/label.js"></script>
+  <script src="./MyBlocks/main.js"></script>
+  <script src="./MyBlocks/radar.js"></script>
   <script src="./MyBlocks/setRegister.js"></script>
-  <script src="./MyBlocks/shoot.js"></script>
-  <script src="./MyBlocks/radarPulse.js"></script>
   
   <style>
     body {
@@ -33,26 +31,35 @@
   </style>
 </head>
 <body>
-  <div style="height: 500px;width: 45%; float:left;">
-    <h1>Blockly Custom Workstation</h1>
-    <div id="blocklyDiv" style="height: 97%; width: 97%;"></div>
-  </div>
-  <div style="height: 500px;width: 45%; float:right;">
-    <h1>Code Generated from Workspace:</h1>
-    <pre><code id="textarea" style="height: 97%; width: 97%;" ></code></pre>
+  <div style="height: 500px;width: 95%; float:left;overflow: auto;">
+    <h1>RoBlockly Workspace</h1>
+    <div id="blocklyDiv" style="height: 85%; width: 97%;"></div>
   </div>
   <br style="clear:both;"/>
   <br style="clear:both;"/>
   <hr/>
+  <div style="height: 500px;width: 45%; float:left; overflow: auto;">
+    <h1>JS Generated from Workspace:</h1>
+    <pre><code id="jsResult" style="height: 97%; width: 97%;" ></code></pre>
+    <hr/>
+  </div>
+  <div style="height: 500px;width: 45%; float:right; overflow: auto;">
+    <h1>XML Generated from Workspace:</h1>
+    <textarea id="xmlResult" rows="15" cols="75" ></textarea>
+  </div>
+  
+  <br style="clear:both;"/>
+  <br style="clear:both;"/>
+  <hr/>
   <xml id="toolbox" style="display: none">
-    <category name="Math and Comments">
-    <block type="math_number"></block>
-    <block type="math_arithmetic"></block>
-    <block type="roblockwar_comment"></block>
+    <category name="Math and Compare">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="logic_compare"></block>
     </category>
     <category name="Structure">
-      <block type="roblockwar_state"></block>
-      <block type="roblockwar_if_condition"></block>
+      <block type="roblockwar_label"></block>
+      <block type="roblockwar_if"></block>
       <block type="roblockwar_goto"></block>
       <block type="roblockwar_gosub"></block>
       <block type="roblockwar_endsub"></block>
@@ -60,15 +67,12 @@
     <category name="Commands">
       <block type="roblockwar_getRegister"></block>
       <block type="roblockwar_setRegister"></block>
-      <block type="roblockwar_shoot"></block>
-      <block type="roblockwar_radarPulse"></block>
+      <block type="roblockwar_fire"></block>
+      <block type="roblockwar_radar"></block>
     </category>
   </xml>
   <xml id="DefaultWorkSpace" style="display:none;">
-    <xml xmlns="http://www.w3.org/1999/xhtml">
-      <block type="roblockwar_main" id="1" inline="false" x="7" y="59">
-      </block>
-    </xml>
+    <xml xmlns="http://www.w3.org/1999/xhtml"><block type="roblockwar_main" id="1" deletable="false" movable="false" x="0" y="0"><statement name="commands"><block type="roblockwar_label" id="2"><field name="LabelName">Scan</field><next><block type="roblockwar_setRegister" id="3" inline="true"><field name="RegisterName">AIM</field><value name="RegisterValue"><block type="math_arithmetic" id="4" inline="true"><field name="OP">ADD</field><value name="A"><block type="roblockwar_getRegister" id="5"><field name="RegisterName">AIM</field></block></value><value name="B"><block type="math_number" id="6"><field name="NUM">1</field></block></value></block></value><next><block type="roblockwar_label" id="7"><field name="LabelName">Loop</field><next><block type="roblockwar_if" id="8" inline="false"><value name="condition"><block type="logic_compare" id="9" inline="true"><field name="OP">LT</field><value name="A"><block type="roblockwar_radar" id="10"></block></value><value name="B"><block type="math_number" id="11"><field name="NUM">0</field></block></value></block></value><statement name="commands"><block type="roblockwar_gosub" id="12"><field name="LabelName">Fire</field></block></statement><next><block type="roblockwar_goto" id="13"><field name="LabelName">Scan</field><next><block type="roblockwar_label" id="14"><field name="LabelName">Fire</field><next><block type="roblockwar_fire" id="15" inline="true"><value name="BlastDelay"><block type="math_arithmetic" id="16" inline="true"><field name="OP">MINUS</field><value name="A"><block type="math_number" id="17"><field name="NUM">0</field></block></value><value name="B"><block type="roblockwar_getRegister" id="18"><field name="RegisterName">DISTANCE</field></block></value></block></value><next><block type="roblockwar_endsub" id="19"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></statement></block></xml>
   </xml>
   <script type="text/javascript" id="run_webpage_code">
     function replaceAll(find, replace, str) {
@@ -83,7 +87,11 @@
       code = replaceAll(":", ":" + newline, code);
       code = replaceAll(";", ";" + newline, code);
       code = replaceAll("{", "{" + newline, code);
-      document.getElementById('textarea').innerHTML = code;
+      document.getElementById('jsResult').innerHTML = code;
+      
+      var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+      var xml_text = Blockly.Xml.domToText(xml);
+      document.getElementById('xmlResult').innerHTML = xml_text;
     }
     Blockly.addChangeListener(myUpdateFunction);
     var xml_text = document.getElementById('DefaultWorkSpace').innerHTML;
