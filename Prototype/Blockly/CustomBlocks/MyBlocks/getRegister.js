@@ -2,7 +2,6 @@ Blockly.Blocks['roblockwar_getRegister'] = {
   init: function() {
     this.setColour(120);
     this.appendDummyInput()
-        .appendField("Get Register:")
         .appendField(new Blockly.FieldDropdown([["X", "X"],
                                                 ["Y", "Y"],
                                                 ["SPEEDX", "SPEEDX"],
