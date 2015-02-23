@@ -75,7 +75,7 @@
         
     </script>
 </head>
-<body>
+<body class="ThrowBack">
     <div id="page">
         <div id="SplashScreen">
             <div id="SpashScreenBorder">
@@ -99,7 +99,7 @@
             <h1>What do you want to do now?</h1>
             <ol>
                 <li><a href="./Battle.php" alt="Fight some Robots!">Start a Robot Battle</a></li>
-                <li><a href="./Workbench.php" alt="Go to the Workbench!">Assemble or Test a Robot</a></li>
+                <li><a href="./Workbench/index.php" alt="Go to the Workbench!">Assemble or Test a Robot</a></li>
                 <li><a onclick="return toggleSound(this);">Switch Sound (Now Off)</a></li>
                 <li><a href="./Documentation.php">View Documentation</a></li>
             </ol>

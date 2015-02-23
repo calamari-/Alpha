@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>RoBlockWar Workbench- Battlefield</title>
+    <script type="text/javascript" src="../../../JSInterpreter/asyncDemo/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="../bin/acorn_interpreter.js"></script>
+    <script type="text/javascript" src="../bin/nativeHelpers.js"></script>
+    <script type="text/javascript" src="../bin/asyncHelpers.js"></script>
+	<script type="text/javascript" src="../bin/phaser.min.js"></script>
+	
+	<script type="text/javascript" src="../bin/roblockwar.robot.js"></script>
+	<script type="text/javascript" src="../bin/roblockwar.engine.js"></script>
+	
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript" id="RoBlockWar_CustomJS">
+        function init() {
+            window.parent.battlefieldLoaded(startGame);
+        }
+        function startGame(robotCodes){
+            var bots = [];
+            for(var i = 0; i < robotCodes.length; i++){
+                var newRobot = new RoBlockWar_Robot(i, "Robert" + i, robotCodes[i]);
+                bots.push(newRobot);
+            }
+       		RoBlockWar.Main(bots);
+        };
+    </script>
+</head>
+<body onload="init()">
+
+<script type="text/javascript" id="SampleCodeToRun">
+    Registers.setR('SPEEDX', 10);
+  Registers.setR('SPEEDY', 10);
+  Registers.setR('T', 10000);
+ // Right click on any block to add comments
+while(Registers.getR('T') > 0) {
+    Registers.setR('T', Registers.getR('T') - 1);
+ while(Registers.getR('X') < 450) {
+    Registers.setR('SPEEDX', 10);
+ }
+  Registers.setR('SPEEDX', 0);
+ while(Registers.getR('Y') < 450) {
+    Registers.setR('SPEEDY', 10);
+ }
+  Registers.setR('SPEEDY', 0);
+ while(Registers.getR('X') > 50) {
+    Registers.setR('SPEEDX', -10);
+ }
+  Registers.setR('SPEEDX', 0);
+ while(Registers.getR('Y') > 50) {
+    Registers.setR('SPEEDY', -10);
+ }
+  Registers.setR('SPEEDY', 0);
+ }
+</script>
+</body>
+</html>

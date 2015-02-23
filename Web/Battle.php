@@ -33,7 +33,7 @@
     </script>
 </head>
 </head>
-<body>
+<body >
     <div id="page">
         <div id="SubMenu">
             <h1>Battle Royale!</h1>
