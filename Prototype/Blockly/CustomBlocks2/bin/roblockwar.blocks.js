@@ -10,24 +10,19 @@ Blockly.Blocks.procedures_defnoreturn.init = function(){
 };
 
 Blockly.Msg.PROCEDURES_CALL_BEFORE_PARAMS = '';
-Blockly.Msg.PROCEDURES_DEFRETURN_RETURN = 'all done';
+
 Blockly.Blocks.procedures_defreturn = undefined;
 
 
 Blockly.Blocks.logic.HUE = Blockly.Blocks.loops.HUE;
-
 /*************************************
  * Modify Blockly's While Block
-  * TODO: see if we really need to remove 'Until' option
+**************************************/
 var old_controls_whileUntil_init = Blockly.Blocks.controls_whileUntil.init; 
 Blockly.Blocks.controls_whileUntil.init = function(){
   old_controls_whileUntil_init.call(this);  
   this.setMutator(undefined);
-  this.getInput('BOOL').removeField('MODE');
-  this.getInput('BOOL')
-      .appendField("while", 'MODE');
 };
-**************************************/
 
 /*************************************
  * Modify Blockly's if Block

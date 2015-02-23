@@ -3,21 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Blockly Demo: Custom RoBlockWar Blocks</title>
-  <script src="./bin/blockly_compressed.js"></script>
-  <script src="./bin/blocks_compressed.js"></script>
-  <script src="./bin/en.js"></script>
-  <script src="./bin/javascript_compressed.js"></script>
+  <script src="/../Blockly/blockly_compressed.js"></script>
+  <script src="/../Blockly/blocks_compressed.js"></script>
+  <script src="/../Blockly/msg/js/en.js"></script>
+  <script src="/../Blockly/javascript_compressed.js"></script>
 
-  <script src="./MyBlocks/callF.js"></script>
-  <script src="./MyBlocks/declareF.js"></script>
-  <script src="./MyBlocks/fire.js"></script>
-  <script src="./MyBlocks/getRegister.js"></script>
-  <script src="./MyBlocks/if.js"></script>
-  <script src="./MyBlocks/radar.js"></script>
-  <script src="./MyBlocks/return.js"></script>
-  <script src="./MyBlocks/setRegister.js"></script>
-  <script src="./MyBlocks/while.js"></script>
-  
+  <script src="./bin/roblockwar.blocks.js"></script>
   
   <style>
     body {
@@ -53,210 +44,25 @@
   <br style="clear:both;"/>
   <hr/>
   <xml id="toolbox" style="display: none">
-    <category name="Math and Compare">
-    <block type="math_number"></block>
-    <block type="math_arithmetic"></block>
-    <block type="logic_compare"></block>
-    </category>
-    <category name="Structure">
-      <block type="roblockwar_while"></block>
-      <block type="roblockwar_if"></block>
-      <block type="roblockwar_declareF"></block>
-      <block type="roblockwar_callF"></block>
-      <block type="roblockwar_return"></block>
+    <category name="Program Flow">
+      <block type="controls_whileUntil"></block>
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
     </category>
     <category name="Instructions">
       <block type="roblockwar_getRegister"></block>
       <block type="roblockwar_setRegister"></block>
       <block type="roblockwar_radar"></block>
       <block type="roblockwar_fire"></block>
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+    </category>
+    <category name="Instruction Groups" custom="PROCEDURE">
     </category>
   </xml>
+  
   <xml id="DefaultWorkSpace" style="display:none;">
-    <xml xmlns="http://www.w3.org/1999/xhtml">
-      <block type="roblockwar_declareF" id="1" x="0" y="0">
-        <field name="functionName">fireTwice</field>
-        <statement name="commands">
-          <block type="roblockwar_setRegister" id="55" inline="true">
-            <field name="RegisterName">A</field>
-            <value name="RegisterValue">
-              <block type="math_number" id="59">
-                <field name="NUM">2</field>
-              </block>
-            </value>
-            <next>
-              <block type="roblockwar_setRegister" id="102" inline="true">
-                <field name="RegisterName">D</field>
-                <value name="RegisterValue">
-                  <block type="roblockwar_getRegister" id="110">
-                    <field name="RegisterName">DAMAGE</field>
-                  </block>
-                </value>
-                <next>
-                  <block type="roblockwar_while" id="32" inline="false">
-                    <value name="condition">
-                      <block type="logic_compare" id="36" inline="true">
-                        <field name="OP">NEQ</field>
-                        <value name="A">
-                          <block type="roblockwar_getRegister" id="45">
-                            <field name="RegisterName">A</field>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="math_number" id="40">
-                            <field name="NUM">0</field>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                    <statement name="commands">
-                      <block type="roblockwar_if" id="2" inline="false">
-                        <value name="condition">
-                          <block type="logic_compare" id="3" inline="true">
-                            <field name="OP">EQ</field>
-                            <value name="A">
-                              <block type="roblockwar_getRegister" id="4">
-                                <field name="RegisterName">COOLDOWN</field>
-                              </block>
-                            </value>
-                            <value name="B">
-                              <block type="math_number" id="5">
-                                <field name="NUM">0</field>
-                              </block>
-                            </value>
-                          </block>
-                        </value>
-                        <statement name="commands">
-                          <block type="roblockwar_fire" id="6" inline="true">
-                            <value name="BlastDelay">
-                              <block type="math_arithmetic" id="7" inline="true">
-                                <field name="OP">MINUS</field>
-                                <value name="A">
-                                  <block type="math_number" id="8">
-                                    <field name="NUM">0</field>
-                                  </block>
-                                </value>
-                                <value name="B">
-                                  <block type="roblockwar_getRegister" id="9">
-                                    <field name="RegisterName">DISTANCE</field>
-                                  </block>
-                                </value>
-                              </block>
-                            </value>
-                            <next>
-                              <block type="roblockwar_setRegister" id="50" inline="true">
-                                <field name="RegisterName">A</field>
-                                <value name="RegisterValue">
-                                  <block type="math_arithmetic" id="76" inline="true">
-                                    <field name="OP">MINUS</field>
-                                    <value name="A">
-                                      <block type="roblockwar_getRegister" id="72">
-                                        <field name="RegisterName">X</field>
-                                      </block>
-                                    </value>
-                                    <value name="B">
-                                      <block type="math_number" id="80">
-                                        <field name="NUM">1</field>
-                                      </block>
-                                    </value>
-                                  </block>
-                                </value>
-                              </block>
-                            </next>
-                          </block>
-                        </statement>
-                        <next>
-                          <block type="roblockwar_if" id="90" inline="false">
-                            <value name="condition">
-                              <block type="logic_compare" id="94" inline="true">
-                                <field name="OP">NEQ</field>
-                                <value name="A">
-                                  <block type="roblockwar_getRegister" id="115">
-                                    <field name="RegisterName">DAMAGE</field>
-                                  </block>
-                                </value>
-                                <value name="B">
-                                  <block type="roblockwar_getRegister" id="120">
-                                    <field name="RegisterName">D</field>
-                                  </block>
-                                </value>
-                              </block>
-                            </value>
-                            <statement name="commands">
-                              <block type="roblockwar_return" id="130"></block>
-                            </statement>
-                          </block>
-                        </next>
-                      </block>
-                    </statement>
-                  </block>
-                </next>
-              </block>
-            </next>
-          </block>
-        </statement>
-      </block>
-      <block type="roblockwar_while" id="10" inline="false" x="580" y="177">
-        <comment pinned="false" h="80" w="160">Right click on any block to add comments</comment>
-        <value name="condition">
-          <block type="logic_compare" id="11" inline="true">
-            <field name="OP">EQ</field>
-            <value name="A">
-              <block type="math_number" id="12">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-            <value name="B">
-              <block type="math_number" id="13">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-          </block>
-        </value>
-        <statement name="commands">
-          <block type="roblockwar_setRegister" id="14" inline="true">
-            <field name="RegisterName">AIM</field>
-            <value name="RegisterValue">
-              <block type="math_arithmetic" id="15" inline="true">
-                <field name="OP">ADD</field>
-                <value name="A">
-                  <block type="roblockwar_getRegister" id="16">
-                    <field name="RegisterName">AIM</field>
-                  </block>
-                </value>
-                <value name="B">
-                  <block type="math_number" id="17">
-                    <field name="NUM">1</field>
-                  </block>
-                </value>
-              </block>
-            </value>
-            <next>
-              <block type="roblockwar_while" id="18" inline="false">
-                <value name="condition">
-                  <block type="logic_compare" id="19" inline="true">
-                    <field name="OP">LT</field>
-                    <value name="A">
-                      <block type="roblockwar_radar" id="20"></block>
-                    </value>
-                    <value name="B">
-                      <block type="math_number" id="21">
-                        <field name="NUM">0</field>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <statement name="commands">
-                  <block type="roblockwar_callF" id="22">
-                    <field name="functionName">fireTwice</field>
-                  </block>
-                </statement>
-              </block>
-            </next>
-          </block>
-        </statement>
-      </block>
-    </xml>
+   
   </xml>
   <script type="text/javascript" id="run_webpage_code">
     function replaceAll(find, replace, str) {
