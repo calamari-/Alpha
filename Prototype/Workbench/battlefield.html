@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+    <title>RoBlockWar Workbench- Battlefield</title>
+
+    <script type="text/javascript" src="./js/acorn_interpreter.js"></script>
+    <script type="text/javascript" src="./js/nativeHelpers.js"></script>
+    <script type="text/javascript" src="./js/asyncHelpers.js"></script>
+	<script type="text/javascript" src="./js/phaser.min.js"></script>
+	
+	<script type="text/javascript" src="./js/roblockwar.robot.js"></script>
+	<script type="text/javascript" src="./js/roblockwar.engine.js"></script>
+	
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+    <script type="text/javascript" id="RoBlockWar_CustomJS">
+        function init() {
+            window.parent.battlefieldLoaded(startGame, reload);
+            
+        }
+        function init2(){
+            startGame([document.getElementById('defaultCode').innerHTML], window.console.log);
+        }
+        function reload(){
+            location.reload();
+        }
+        var battleField = null;
+        function startGame(robotCodes, consoleCallBack){
+            if(battleField != null){
+                battleField.dispose();
+                battleField = null;
+                var bd = document.getElementById('body');
+                while (bd.firstChild) {
+                    bd.removeChild(bd.firstChild);
+                }
+            }
+            var bots = [];
+            for(var i = 0; i < robotCodes.length; i++){
+                var newRobot = new RoBlockWar_Robot(i, "Robert" + i, robotCodes[i]);
+                bots.push(newRobot);
+            }
+       		battleField = RoBlockWar.Main(bots);
+        };
+    </script>
+</head>
+<body id="body" onload="init2()">
+    <script type="text/javascript" id="defaultCode" style="display:none">
+        function move_to_corner() {
+
+   Registers.setR('RANDOM', 4);
+  Registers.setR('S', Registers.getR('RANDOM'));
+ while (Registers.getR('S') == Registers.getR('R')) {
+     Registers.setR('S', Registers.getR('RANDOM'));
+ }
+
+   Registers.setR('R', Registers.getR('S'));
+   console.log('new corner is {' + Registers.getR('R') + '}');
+ if (Registers.getR('R') == 1) {
+
+     Registers.setR('A', 50);
+  Registers.setR('B', 50);
+  Registers.setR('C', -1);
+  Registers.setR('D', -1);
+ }
+
+  if (Registers.getR('R') == 2) {
+
+     Registers.setR('A', 250);
+  Registers.setR('B', 50);
+  Registers.setR('C', 1);
+  Registers.setR('D', -1);
+ }
+
+  if (Registers.getR('R') == 3) {
+
+     Registers.setR('A', 250);
+  Registers.setR('B', 250);
+  Registers.setR('C', 1);
+  Registers.setR('D', 1);
+ }
+
+  if (Registers.getR('R') == 4) {
+
+     Registers.setR('A', 50);
+  Registers.setR('B', 250);
+  Registers.setR('C', -1);
+  Registers.setR('D', 1);
+ }
+
+  if (Registers.getR('X') * Registers.getR('C') < Registers.getR('A') * Registers.getR('C')) {
+
+     Registers.setR('SPEEDX', 40 * Registers.getR('C'));
+ }
+
+  if (Registers.getR('Y') * Registers.getR('D') < Registers.getR('B') * Registers.getR('D')) {
+
+     Registers.setR('SPEEDY', 40 * Registers.getR('D'));
+ }
+  while (Registers.getR('SPEEDY') + Registers.getR('SPEEDX') != 0) {
+    if (Registers.getR('X') * Registers.getR('C') >= Registers.getR('A') * Registers.getR('C')) {
+
+       Registers.setR('SPEEDX', 0);
+ }
+
+    if (Registers.getR('Y') * Registers.getR('D') >= Registers.getR('B') * Registers.getR('D')) {
+
+       Registers.setR('SPEEDY', 0);
+ }
+
+  }
+
+}
+
+
+function scan_and_fire() {
+
+   Registers.setR('RANDOM', 360);
+  Registers.setR('AIM', Registers.getR('RANDOM'));
+  console.log('sending radar pulse');
+ if (sendRadarPulse() < 0) {
+
+    while (Registers.getR('COOLDOWN') > 0) {
+
+       Registers.setR('U', 0);
+ }
+
+   console.log('firing at distance (' + Registers.getR('DISTANCE') + ')');
+}
+
+}
+
+
+
+move_to_corner();
+
+ Registers.setR('Q', Registers.getR('DAMAGE'));
+ 
+ while (Registers.getR('DAMAGE') < 100) {
+   Registers.setR('Z', 5);
+  while (Registers.getR('DAMAGE') < Registers.getR('Q') + 20 && Registers.getR('Z') > 0) {
+    Registers.setR('Z', Registers.getR('Z') - 1);
+    scan_and_fire();
+
+  }
+
+  move_to_corner();
+
+   Registers.setR('Q', Registers.getR('DAMAGE'));
+ }
+    </script>
+</body>
+</html>

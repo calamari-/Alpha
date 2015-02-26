@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"> 
+<head>
+    <title>RoBlock Wars</title>
+
+    <script>
+      function replaceAll(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+      }
+      var current_workspace = [];
+      function blocklyLoaded(blockly) {
+        blockly.index = current_workspace.length;
+        current_workspace.push(blockly);
+        // Called once Blockly is fully loaded.
+        if(blockly.index == 0){
+            blockly.addChangeListener(setCodeOnZero);
+        }
+        else{
+            blockly.addChangeListener(setCodeOnOne);
+        }
+      }
+      
+      function setCodeOnZero() {
+            var i = 0;
+            var code = current_workspace[i].JavaScript.workspaceToCode();
+            var newline = String.fromCharCode(13, 10) || '\n';
+            code = replaceAll("}", "}" + newline, code);
+            code = replaceAll(":", ":" + newline, code);
+            code = replaceAll(";", ";" + newline, code);
+            code = replaceAll("{", "{" + newline, code);
+            document.getElementById('jsResult0').innerHTML = code;
+            
+            var xml = current_workspace[i].Xml.workspaceToDom(current_workspace[i].mainWorkspace);
+            var xml_text = current_workspace[i].Xml.domToText(xml);
+            document.getElementById('xmlResult0').innerHTML = xml_text;
+        }
+        
+        function setCodeOnOne() {
+            var i = 1;
+            var code = current_workspace[i].JavaScript.workspaceToCode();
+            var newline = String.fromCharCode(13, 10) || '\n';
+            code = replaceAll("}", "}" + newline, code);
+            code = replaceAll(":", ":" + newline, code);
+            code = replaceAll(";", ";" + newline, code);
+            code = replaceAll("{", "{" + newline, code);
+            document.getElementById('jsResult1').innerHTML = code;
+            
+            var xml = current_workspace[i].Xml.workspaceToDom(current_workspace[i].mainWorkspace);
+            var xml_text = current_workspace[i].Xml.domToText(xml);
+            document.getElementById('xmlResult1').innerHTML = xml_text;
+        }
+      
+      var startOnLoad = false;
+      var startBattle = null;
+      var reloadBattle = null;
+      function battlefieldLoaded(startFunc, reloadFunc) {
+        startBattle = startFunc;
+        reloadBattle = reloadFunc;
+        if(startOnLoad == true){
+           doTest();  
+        }
+      }
+      
+      function goWithTest(){
+          startOnLoad = true;
+          if(reloadBattle != null){
+              reloadBattle.call(this);
+          }
+      }
+      
+      function doTest(){
+          if(startBattle != null){
+             var codes = [];
+             for(var i = 0; i < current_workspace.length;i++){
+                 codes.push(current_workspace[i].JavaScript.workspaceToCode());
+             }
+            startBattle.call(this, codes, window.console.log);
+         } 
+      }
+    </script>
+</head>
+<body class="ThrowBack">
+    <div id="page">
+        <h1>Workbench</h1>
+        <br/>
+        <br/>
+        
+        <iframe id="workspace1" src="./workspace.html" style="height: 1000px;width: 45%;margin-right: 5%;">
+        </iframe>
+        <iframe id="workspace2" src="./workspace.html" style="height: 1000px;width: 45%;">
+        </iframe>
+        <br/>
+        <button onclick="goWithTest();">Test</button>
+        <hr/>
+        <div style="margin: auto auto; widthL 505px; text-align: center;">
+            <iframe id="battlefield" src="./battlefield.html" style="height: 500px;width:500px;">
+            </iframe>
+        </div>
+        <br/>
+        <hr/>
+        <div style="height: 500px;width: 45%; float:left; overflow: auto;">
+            <h1>JS Generated from Workspace1:</h1>
+            <pre><code id="jsResult0" style="height: 97%; width: 97%;" ></code></pre>
+
+            <h1>XML Generated from Workspace1:</h1>
+            <textarea id="xmlResult0" rows="15" cols="75" ></textarea>
+        </div>
+        <div style="height: 500px;width: 45%; float:right; overflow: auto;">
+            <h1>JS Generated from Workspace2:</h1>
+            <pre><code id="jsResult1" style="height: 97%; width: 97%;" ></code></pre>
+
+            <h1>XML Generated from Workspace2:</h1>
+            <textarea id="xmlResult1" rows="15" cols="75" ></textarea>
+        </div>
+        <br style="clear: both;"/>
+        <br style="clear: both;"/>
+        <br style="clear: both;"/>
+        
+        
+        <br/>
+        <hr/>
+        <br style="clear:both;"/>
+        <br style="clear:both;"/>
+    </div>
+</body>
+</html>
