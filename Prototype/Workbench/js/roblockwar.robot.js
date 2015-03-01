@@ -3,6 +3,7 @@ var RoBlockWar = RoBlockWar || {};
 function RoBlockWar_Robot(processId, robotName, userCode){
   this.processId = processId;
   this.RobotPlayer = null;
+  this.RobotTurret = null;
   this.RobotName = robotName;
   this.CodeToRun = userCode;
   this.Registers = {
@@ -253,8 +254,9 @@ function RoBlockWar_Robot(processId, robotName, userCode){
   }
 }
 
-RoBlockWar_Robot.prototype.init = function(View){
-    this.RobotPlayer = View;
+RoBlockWar_Robot.prototype.init = function(body, turret){
+    this.RobotPlayer = body;
+    this.RobotTurret = turret;
 };
 
 RoBlockWar_Robot.prototype.update = function(){
@@ -287,12 +289,9 @@ RoBlockWar_Robot.prototype.update = function(){
     this.RobotPlayer.animations.stop();
     this.RobotPlayer.frame = 4;
   }
-};
-
-RoBlockWar_Robot.prototype.fireAtDistance = function (distance) {
-    if(this.RobotPlayer != null){
-        console.log('Firing at {' || distance || '}');
-    }
+  this.RobotTurret.x = this.RobotPlayer.x;
+  this.RobotTurret.y = this.RobotPlayer.y;
+  this.RobotTurret.angle = this.Registers.getR('AIM');
 };
 
 RoBlockWar_Robot.prototype.sendRadarPulse = function () {
@@ -300,13 +299,48 @@ RoBlockWar_Robot.prototype.sendRadarPulse = function () {
     return -1;
 };
 
-RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
+RoBlockWar_Robot.prototype.fireAtDistance = function (distance, callback) {
+    if(this.RobotPlayer != null){
+        console.log('Firing at {' || distance || '}');
+    }
+    if(callback != null){
+        callback();
+    }
+};
+
+RoBlockWar_Robot.prototype.waitFor = function (seconds, callback) {
+    setTimeout(function(){
+        if(callback != null){
+            callback();
+        }
+    }, (seconds * 1000));
+    
+};
+
+RoBlockWar_Robot.prototype.createInterpreterInitializer = function(highlightBlock) {
     var robot = this;
+    if(highlightBlock == null){
+        parent.window.console.log('highlightblock is null');
+    }else{
+        parent.window.console.log('highlightblock is good in create Init');
+    }
     return function (interpreter, scope, helper) {
+        var highlightWrapper = null;
+        if(highlightBlock != null){
+            highlightWrapper = function(id) {
+                id = id ? id.toString() : '';
+                parent.window.console.log('calling highlight(' + id + ')');
+                return interpreter.createPrimitive(highlightBlock(id));
+            };
+        }
         interpreter.setProperty(scope, 'Registers', helper.nativeValueToInterpreter(robot.Registers));
     //    interpreter.setProperty(scope, 'fireAtDistance', helper.nativeValueToInterpreter(robot.fireAtDistance));
         interpreter.setProperty(scope, 'sendRadarPulse', helper.nativeValueToInterpreter(robot.sendRadarPulse));
+        interpreter.setProperty(scope, 'waitFor', helper.nativeValueToInterpreter(robot.waitFor));
         interpreter.setProperty(scope, 'console', helper.nativeValueToInterpreter(window.console));
+        if(highlightWrapper != null){
+            interpreter.setProperty(scope, 'highlightBlock',  helper.nativeValueToInterpreter(highlightWrapper));
+        }
     };
 };
 

@@ -77,7 +77,7 @@ Blockly.Blocks['roblockwar_fire'] = {
 
 Blockly.JavaScript['roblockwar_fire'] = function(block) {
   var value_blastdelay = Blockly.JavaScript.valueToCode(block, 'BlastDelay', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = 'fireAtDistance(' + value_blastdelay + ');';
+  var code = 'fireAtDistance(' + value_blastdelay + ', asyncWait);';
   return code;
 };
 
@@ -190,5 +190,27 @@ Blockly.JavaScript['roblockwar_setRegister'] = function(block) {
   
   var code = ' Registers.setR(\'' + dropdown_registername + '\', ' + value_registervalue + '); ';
   
+  return code;
+};
+
+/*************************************
+ * Wait Block
+**************************************/
+
+Blockly.Blocks['roblockwar_wait'] = {
+  init: function() {
+    this.setColour(260);
+    this.appendValueInput("sleepTime")
+        .setCheck("Number")
+        .appendField("Wait for seconds: ");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Wait for this Seconds');
+  }
+};
+
+Blockly.JavaScript['roblockwar_wait'] = function(block) {
+  var value_sleeptime = Blockly.JavaScript.valueToCode(block, 'sleepTime', Blockly.JavaScript.ORDER_ATOMIC);
+  var code = 'waitFor(' + value_sleeptime + ', asyncWait);';
   return code;
 };

@@ -12,7 +12,7 @@ RoBlockWar.Boot.prototype = {
   },
     
   preload: function() {
-    this.load.image('preloadbar', './assets/sprite/preloader-bar.png');
+    this.load.image('preloadbar', './assets/preloader-bar.png');
   },
   create: function() {
     this.state.start('Preloader');
@@ -34,8 +34,12 @@ RoBlockWar.Preloader.prototype = {
     this.load.setPreloadSprite(this.preloadBar);
 
     // load game assets
-    this.load.image('sky', './assets/sprite/sky.png');
-    this.load.spritesheet('player', './assets/sprite/dude.png', 32, 48);
+    this.load.atlas('robot', './assets/tanks.png', './assets/tanks.json');
+    this.load.atlas('enemy', './assets/enemy-tanks.png', './assets/tanks.json');
+    this.load.image('logo', './assets/logo.png');
+    this.load.image('bullet', './assets/bullet.png');
+    this.load.image('earth', './assets/scorched_earth.png');
+    this.load.spritesheet('kaboom', './assets/explosion.png', 64, 64, 23);
   },
   create: function() {
     this.state.start('Game');
@@ -72,32 +76,55 @@ RoBlockWar.Game = function (game) {
 
 RoBlockWar.Game.prototype = {
 	create: function () {
-        //  Our tiled scrolling background
-        this.land = this.game.add.sprite(0, 0, 'sky');
-        
-        //create players
-        for(var i = 0; i < this.game.Robots.length; i++)
-        {
-            var botView = this.game.add.sprite(250 + (10 * i), 250, 'player');
-            this.game.physics.arcade.enable(botView);
-            
-            botView.body.maxVelocity.setTo(400, 400);
-            botView.body.collideWorldBounds = true;
-            
-            botView.animations.add('left', [0, 1, 2, 3], 10, true);
-            botView.animations.add('right', [5, 6, 7, 8], 10, true);
-            botView.animations.add('up', [4, 2, 4, 5], 10, true);
-            botView.animations.add('down', [4, 2, 4, 5], 10, true);
-            this.game.Robots[i].init(botView);
-        
-    		var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer());
-    		this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
-    	}
-    	var g = this;
-    	this.game.Scheduler.run(function () {
-    		alert('Game now Over');
-    		g.state.start('Done');
-    	});
+	  //  Resize our game world to be a 2000 x 2000 square
+    this.game.world.setBounds(0, 0, 500, 500);
+
+    //  Our tiled scrolling background
+    this.land = this.game.add.tileSprite(0, 0, 800, 600, 'earth');
+    this.land.fixedToCamera = true;
+
+    //  Our tiled scrolling background
+    this.land = this.game.add.sprite(0, 0, 'earth');
+    
+    //create robots
+    for(var i = 0; i < this.game.Robots.length; i++)
+    { 
+      //  The base of our robot
+      var botView = this.game.add.sprite(0, 0, 'robot', 'tank1');
+      botView.anchor.setTo(0.5, 0.5);
+      botView.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
+  
+      //  This will force it to decelerate and limit its speed
+      this.game.physics.enable(botView, Phaser.Physics.ARCADE);
+      botView.body.drag.set(0.2);
+      botView.body.maxVelocity.setTo(400, 400);
+      botView.body.collideWorldBounds = true;
+  
+      //  Finally the turret that we place on-top of the tank body
+      var turret = this.game.add.sprite(0, 0, 'robot', 'turret');
+      turret.anchor.setTo(0.3, 0.5);
+  
+      //  The enemies bullet group
+      enemyBullets = this.game.add.group();
+      enemyBullets.enableBody = true;
+      enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+      enemyBullets.createMultiple(100, 'bullet');
+      
+      enemyBullets.setAll('anchor.x', 0.5);
+      enemyBullets.setAll('anchor.y', 0.5);
+      enemyBullets.setAll('outOfBoundsKill', true);
+      enemyBullets.setAll('checkWorldBounds', true);
+      this.game.Robots[i].init(botView, turret);
+      
+      
+      var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer(this.game.highlightBlockFunc));
+      this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
+    }
+    var g = this;
+    this.game.Scheduler.run(function () {
+      alert('Game now Over');
+      g.state.start('Done');
+    });
 	},
 
 	update: function () {
@@ -137,12 +164,13 @@ RoBlockWar.Done.prototype = {
   }
 };
 
-RoBlockWar.Main = function(r) {
+RoBlockWar.Main = function(bots, highlightFunc) {
     
 	//	100% of the browser window - see Boot.js for additional configuration
 	var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '');
 
-  game.Robots = r;
+  game.Robots = bots;
+  game.highlightBlockFunc = highlightFunc;
 	game.Scheduler = new AsyncScheduler();
   
 	//	Add the States the game has.
@@ -153,7 +181,7 @@ RoBlockWar.Main = function(r) {
 	
 	//	Now start the Boot state.
 	game.state.start('Boot');
-	return this;
+	return game;
 };
 
 RoBlockWar.destroy = function(){

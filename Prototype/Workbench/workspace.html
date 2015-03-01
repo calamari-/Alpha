@@ -27,19 +27,11 @@
   
   <script>
     function init() {
+        Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+        Blockly.JavaScript.addReservedWords('highlightBlock');
         Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), collapse: false, disable: false});
-        
+        Blockly.mainWorkspace.traceOn(true);
         window.parent.blocklyLoaded(Blockly);
-        if(Blockly.Index == 0){
-        var xml_text = document.getElementById('DefaultWorkSpace').outerHTML;
-        var xml = Blockly.Xml.textToDom(xml_text);
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);  
-        }
-        else{
-        var xml_text = document.getElementById('DefaultWorkSpace1').outerHTML;
-        var xml = Blockly.Xml.textToDom(xml_text);
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);  
-        }
     }
   </script>
 </head>
@@ -55,6 +47,7 @@
       <block type="roblockwar_setRegister"></block>
       <block type="roblockwar_radar"></block>
       <block type="roblockwar_fire"></block>
+      <block type="roblockwar_wait"></block>
       <block type="math_number"></block>
       <block type="math_arithmetic"></block>
     </category>

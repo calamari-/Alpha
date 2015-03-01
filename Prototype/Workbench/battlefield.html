@@ -19,17 +19,26 @@
     </style>
     <script type="text/javascript" id="RoBlockWar_CustomJS">
         function init() {
-            window.parent.battlefieldLoaded(startGame, reload);
+            window.parent.battlefieldLoaded(startGame, reload, pause);
             
-        }
-        function init2(){
-            startGame([document.getElementById('defaultCode').innerHTML], window.console.log);
         }
         function reload(){
             location.reload();
         }
+        
+        function pause(){
+            if(battleField != null){
+                battleField.paused = true;
+            }
+        }
         var battleField = null;
-        function startGame(robotCodes, consoleCallBack){
+        function startGame(robotCodes, highlighting){
+            if(highlighting != null){
+                parent.window.console.log('highlighting good to go ');
+            }else{
+                parent.window.console.log('highlighting is null!');
+            }
+            parent.window.console.log('starting Game ');
             if(battleField != null){
                 battleField.dispose();
                 battleField = null;
@@ -43,11 +52,11 @@
                 var newRobot = new RoBlockWar_Robot(i, "Robert" + i, robotCodes[i]);
                 bots.push(newRobot);
             }
-       		battleField = RoBlockWar.Main(bots);
+       		battleField = RoBlockWar.Main(bots, highlighting);
         };
     </script>
 </head>
-<body id="body" onload="init2()">
+<body id="body" onload="init()">
     <script type="text/javascript" id="defaultCode" style="display:none">
         function move_to_corner() {
 
