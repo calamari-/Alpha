@@ -340,9 +340,8 @@ RoBlockWar_Robot.prototype.createInterpreterInitializer = function(highlightBloc
             return interpreter.createPrimitive(highlightBlock(id));
         };
         
-        var pauseWrapper = function(id) {
-            id = id ? id.toString() : '';
-            return interpreter.createPrimitive(robot.pause);
+        var pauseWrapper = function() {
+            return interpreter.createPrimitive(robot.devPause);
         };
         
         interpreter.setProperty(scope, 'Registers', helper.nativeValueToInterpreter(robot.Registers));

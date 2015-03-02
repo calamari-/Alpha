@@ -10,6 +10,7 @@
         current_workspace = blockly;
     }
     
+    var startOnLoad = false;
     var battleField = null;
     var reloadBattle = null;
     function battlefieldLoaded(startFunc, reloadFunc) {
@@ -18,7 +19,7 @@
             if(startFunc != null){
                 if(current_workspace != null){
                     var code = current_workspace.JavaScript.workspaceToCode();
-                    startFunc.call(this, [code], highlight);
+                    battleField = startFunc.call(this, [code], highlight);
                 }
             }  
         }
@@ -38,7 +39,9 @@
     }
     
     function pause(){
+        window.console.log('pausing');
         if(battleField != null){
+            window.console.log('dev pausing');
             battleField.DevPause(true);
         }
     }
@@ -127,8 +130,8 @@
             <div style="position:absolute;width: 525px;">
                 <div style="height: 50px;">
                     <button onclick="startSimulation();">Test</button>
-                    <button onclick="startSimulation();">Test</button>
-                    <button onclick="startSimulation();">Test</button>
+                    <button onclick="pause();">Pause</button>
+                    <button onclick="unpause();">Continue</button>
                 </div>
                 <iframe id="battlefield" src="./battlefield.html" style="height: 475px;width:475px;border:none;display:inline-block;background: url('./assets/scorched_earth.png');">
                 </iframe>

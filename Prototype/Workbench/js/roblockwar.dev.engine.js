@@ -123,13 +123,9 @@ RoBlockWar.Game.prototype = {
       var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer(this.game.highlightBlockFunc));
       this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
     }
-    var that = this;
-    this.game.Scheduler.run(function () {
-      alert('Game now Over');
-      that.quitGame(null);
-    });
+    this.game.Scheduler.run(this.quitGame);
 	},
-
+  
 	update: function () {
 	    var startWith = (this.time.totalElapsedSeconds() % this.game.Robots.length) / 100;
 	    
@@ -144,7 +140,6 @@ RoBlockWar.Game.prototype = {
 	},
 
 	quitGame: function (pointer) {
-
 		//	Here you should destroy anything you no longer need.
 		//	Stop music, delete sprites, purge caches, free resources, all that good stuff.
 
@@ -172,12 +167,14 @@ RoBlockWar.BuildGame = function(robotCodes, highlightFunc) {
 	var orig_doWork = game.Scheduler._doWork;
 	game.Scheduler._doWork = function(doneCallback){
 	  if(!game.Scheduler.paused){
-	    orig_doWork(doneCallback);
+	    orig_doWork.call(game.Scheduler, doneCallback);
 	  }
 	}
   game.DevPause = function(toggle){
+    window.console.log('setting pause with toggle {' + toggle + '}');
     this.paused = toggle;
     this.Scheduler.paused = toggle;
+    this.Scheduler.run(function(){});
   }
 
 	//	Add the States the game has.
