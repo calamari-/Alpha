@@ -1,21 +1,19 @@
 <!doctype html>
 <html lang="en"> 
 <head>
-    <title>RoBlock Wars</title>
+    <title>RoBlockWar Workbench- Main</title>
    
     <script type="text/javascript" id="MainDriver">
     
     var current_workspace = null;
-    function blocklyLoaded(blockly) {
+    function workspaceLoaded(blockly) {
         current_workspace = blockly;
     }
     
-    var startOnLoad = false;
+    var battleField = null;
     var reloadBattle = null;
-    var pauseBattle = null;
-    function battlefieldLoaded(startFunc, reloadFunc, pauseFunc) {
+    function battlefieldLoaded(startFunc, reloadFunc) {
         reloadBattle = reloadFunc;
-        pauseBattle = pauseFunc;
         if(startOnLoad == true){
             if(startFunc != null){
                 if(current_workspace != null){
@@ -26,22 +24,29 @@
         }
     }
     
-    function highlight(id){
-        window.console.log('highlight(' + id + ') called in main.html');
-        if(current_workspace != null){
-            window.console.log('setting highlight on (' + id + ') in main.html');    
-            current_workspace.mainWorkspace.highlightBlock(id);
-            if(pauseBattle != null){
-                pauseBattle.call(this);
-            }
-        }
-    }
-    
     function startSimulation(){
       startOnLoad = true;
       if(reloadBattle != null){
           reloadBattle.call(this);
       }
+    }
+    
+    function highlight(id){
+        if(current_workspace != null){
+            current_workspace.mainWorkspace.highlightBlock(id);
+        }
+    }
+    
+    function pause(){
+        if(battleField != null){
+            battleField.DevPause(true);
+        }
+    }
+    
+    function unpause(){
+        if(battleField != null){
+            battleField.DevPause(false);
+        }
     }
 
     function loadWorkspace() {

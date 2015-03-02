@@ -76,6 +76,9 @@ RoBlockWar.Game = function (game) {
 
 RoBlockWar.Game.prototype = {
 	create: function () {
+	  // allow game to run in background (keep going even if switch tabs/windows)
+	  this.game.disableVisibilityChange = true;
+	  
 	  //  Resize our game world to be a 2000 x 2000 square
     this.game.world.setBounds(0, 0, 500, 500);
 
@@ -114,16 +117,16 @@ RoBlockWar.Game.prototype = {
       enemyBullets.setAll('anchor.y', 0.5);
       enemyBullets.setAll('outOfBoundsKill', true);
       enemyBullets.setAll('checkWorldBounds', true);
-      this.game.Robots[i].init(botView, turret);
       
+      this.game.Robots[i].init(botView, turret);
       
       var runner = new AsyncInterpreterRunner(this.game.Robots[i].CodeToRun, this.game.Robots[i].createInterpreterInitializer(this.game.highlightBlockFunc));
       this.game.Scheduler.submit(runner, 'process' + this.game.Robots[i].processId);
     }
-    var g = this;
+    var that = this;
     this.game.Scheduler.run(function () {
       alert('Game now Over');
-      g.state.start('Done');
+      that.quitGame(null);
     });
 	},
 
@@ -147,32 +150,36 @@ RoBlockWar.Game.prototype = {
 
 		//	Then let's go back to the main menu.
 		this.state.shutDown();
+		this.game.destroy();
+		this.destroy();
 	}
 };
 
-RoBlockWar.Done = function (game) {
-};
-
-//setting game configuration and loading the assets for the loading screen
-RoBlockWar.Done.prototype = {
-  init: function () {
-  },
-    
-  update: function() {
-  },
-  create: function() {
+RoBlockWar.BuildGame = function(robotCodes, highlightFunc) {
+  
+  var bots = [];
+  for(var i = 0; i < robotCodes.length; i++){
+      var newRobot = new RoBlockWar_Robot(i, "DevBot" + i, robotCodes[i]);
+      bots.push(newRobot);
   }
-};
-
-RoBlockWar.Main = function(bots, highlightFunc) {
-    
-	//	100% of the browser window - see Boot.js for additional configuration
 	var game = new Phaser.Game("100%", "100%", Phaser.AUTO, '');
 
   game.Robots = bots;
   game.highlightBlockFunc = highlightFunc;
 	game.Scheduler = new AsyncScheduler();
-  
+	game.Scheduler.paused = false;
+	
+	var orig_doWork = game.Scheduler._doWork;
+	game.Scheduler._doWork = function(doneCallback){
+	  if(!game.Scheduler.paused){
+	    orig_doWork(doneCallback);
+	  }
+	}
+  game.DevPause = function(toggle){
+    this.paused = toggle;
+    this.Scheduler.paused = toggle;
+  }
+
 	//	Add the States the game has.
 	game.state.add('Boot', RoBlockWar.Boot);
 	game.state.add('Preloader', RoBlockWar.Preloader);
@@ -184,6 +191,3 @@ RoBlockWar.Main = function(bots, highlightFunc) {
 	return game;
 };
 
-RoBlockWar.destroy = function(){
-  this.game.destroy();
-};

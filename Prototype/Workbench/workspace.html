@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Custom RoBlockWar Blocks</title>
+  <title>RoBlockWar: Block Workspace</title>
   <script src="./js/blockly_compressed.js"></script>
   <script src="./js/blocks_compressed.js"></script>
   <script src="./js/en.js"></script>
   <script src="./js/javascript_compressed.js"></script>
-  <script src="./js/roblockwar.blocks.js"></script>
+  <script src="./js/roblockwar.dev.blocks.js"></script>
   
   
   <style>
@@ -27,11 +27,11 @@
   
   <script>
     function init() {
-        Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-        Blockly.JavaScript.addReservedWords('highlightBlock');
         Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), collapse: false, disable: false});
         Blockly.mainWorkspace.traceOn(true);
-        window.parent.blocklyLoaded(Blockly);
+        if(window.parent != null && window.parent.workspaceLoaded != null){
+          window.parent.workspaceLoaded(Blockly);
+        }
     }
   </script>
 </head>

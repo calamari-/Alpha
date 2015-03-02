@@ -46,17 +46,19 @@ Blockly.Blocks['roblockwar_radar'] = {
   init: function() {
     this.setColour(359);
     this.appendDummyInput()
-        .appendField("Get Radar Distance");
+        .appendField("Send Radar Ping");
     this.setInputsInline(true);
-    this.setOutput(true, "Number");
-    this.setTooltip('Check your Radar');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Ping your Radar');
   }
 };
 
 Blockly.JavaScript['roblockwar_radar'] = function(block) {
-  var code = 'sendRadarPulse()';
-  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+  var code = 'sendRadarPulse(asyncWait)';
+  return code;
 };
+Blockly.JavaScript.addReservedWords('sendRadarPulse');
 
 /*************************************
  * Fire/shoot Block
@@ -77,9 +79,10 @@ Blockly.Blocks['roblockwar_fire'] = {
 
 Blockly.JavaScript['roblockwar_fire'] = function(block) {
   var value_blastdelay = Blockly.JavaScript.valueToCode(block, 'BlastDelay', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = 'fireAtDistance(' + value_blastdelay + ', asyncWait);';
+  var code = 'fireAtDistance(' + value_blastdelay + ');';
   return code;
 };
+Blockly.JavaScript.addReservedWords('fireAtDistance');
 
 /*************************************
  * Get Register Block
@@ -136,6 +139,7 @@ Blockly.JavaScript['roblockwar_getRegister'] = function(block) {
   
   return [code, Blockly.JavaScript.ORDER_ATOMIC];
 };
+Blockly.JavaScript.addReservedWords('Registers');
 
 /*************************************
  * Get Register Block
@@ -192,6 +196,7 @@ Blockly.JavaScript['roblockwar_setRegister'] = function(block) {
   
   return code;
 };
+Blockly.JavaScript.addReservedWords('Registers');
 
 /*************************************
  * Wait Block
@@ -214,3 +219,8 @@ Blockly.JavaScript['roblockwar_wait'] = function(block) {
   var code = 'waitFor(' + value_sleeptime + ', asyncWait);';
   return code;
 };
+Blockly.JavaScript.addReservedWords('waitFor');
+
+Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+Blockly.JavaScript.addReservedWords('highlightBlock');
+Blockly.JavaScript.addReservedWords('devPause');
