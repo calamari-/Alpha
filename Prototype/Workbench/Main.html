@@ -1,126 +1,142 @@
 <!doctype html>
 <html lang="en"> 
 <head>
-    <title>RoBlock Wars</title>
-
-    <script>
-      function replaceAll(find, replace, str) {
-        return str.replace(new RegExp(find, 'g'), replace);
-      }
-      var current_workspace = [];
-      function blocklyLoaded(blockly) {
-        blockly.index = current_workspace.length;
-        current_workspace.push(blockly);
-        // Called once Blockly is fully loaded.
-        if(blockly.index == 0){
-            blockly.addChangeListener(setCodeOnZero);
-        }
-        else{
-            blockly.addChangeListener(setCodeOnOne);
-        }
-      }
-      
-      function setCodeOnZero() {
-            var i = 0;
-            var code = current_workspace[i].JavaScript.workspaceToCode();
-            var newline = String.fromCharCode(13, 10) || '\n';
-            code = replaceAll("}", "}" + newline, code);
-            code = replaceAll(":", ":" + newline, code);
-            code = replaceAll(";", ";" + newline, code);
-            code = replaceAll("{", "{" + newline, code);
-            document.getElementById('jsResult0').innerHTML = code;
-            
-            var xml = current_workspace[i].Xml.workspaceToDom(current_workspace[i].mainWorkspace);
-            var xml_text = current_workspace[i].Xml.domToText(xml);
-            document.getElementById('xmlResult0').innerHTML = xml_text;
-        }
-        
-        function setCodeOnOne() {
-            var i = 1;
-            var code = current_workspace[i].JavaScript.workspaceToCode();
-            var newline = String.fromCharCode(13, 10) || '\n';
-            code = replaceAll("}", "}" + newline, code);
-            code = replaceAll(":", ":" + newline, code);
-            code = replaceAll(";", ";" + newline, code);
-            code = replaceAll("{", "{" + newline, code);
-            document.getElementById('jsResult1').innerHTML = code;
-            
-            var xml = current_workspace[i].Xml.workspaceToDom(current_workspace[i].mainWorkspace);
-            var xml_text = current_workspace[i].Xml.domToText(xml);
-            document.getElementById('xmlResult1').innerHTML = xml_text;
-        }
-      
-      var startOnLoad = false;
-      var startBattle = null;
-      var reloadBattle = null;
-      function battlefieldLoaded(startFunc, reloadFunc) {
-        startBattle = startFunc;
+    <title>RoBlockWar Workbench- Main</title>
+   
+    <script type="text/javascript" id="MainDriver">
+    
+    var current_workspace = null;
+    function workspaceLoaded(blockly) {
+        current_workspace = blockly;
+    }
+    
+    var startOnLoad = false;
+    var battleField = null;
+    var reloadBattle = null;
+    function battlefieldLoaded(startFunc, reloadFunc) {
         reloadBattle = reloadFunc;
         if(startOnLoad == true){
-           doTest();  
+            if(startFunc != null){
+                if(current_workspace != null){
+                    var code = current_workspace.JavaScript.workspaceToCode();
+                    battleField = startFunc.call(this, [code], highlight);
+                }
+            }  
         }
+    }
+    
+    function startSimulation(){
+      startOnLoad = true;
+      if(reloadBattle != null){
+          reloadBattle.call(this);
       }
-      
-      function goWithTest(){
-          startOnLoad = true;
-          if(reloadBattle != null){
-              reloadBattle.call(this);
-          }
-      }
-      
-      function doTest(){
-          if(startBattle != null){
-             var codes = [];
-             for(var i = 0; i < current_workspace.length;i++){
-                 codes.push(current_workspace[i].JavaScript.workspaceToCode());
-             }
-            startBattle.call(this, codes, window.console.log);
-         } 
-      }
+    }
+    
+    function highlight(id){
+        if(current_workspace != null){
+            current_workspace.mainWorkspace.highlightBlock(id);
+        }
+    }
+    
+    function pause(){
+        window.console.log('pausing');
+        if(battleField != null){
+            window.console.log('dev pausing');
+            battleField.DevPause(true);
+        }
+    }
+    
+    function unpause(){
+        if(battleField != null){
+            battleField.DevPause(false);
+        }
+    }
+
+    function loadWorkspace() {
+        var input, file, fr;
+
+        if (typeof window.FileReader !== 'function') {
+            alert("The file API isn't supported on this browser yet.");
+            return;
+        }
+
+        input = document.getElementById('workspacefile');
+        if (!input) {
+            alert("Um, couldn't find the workspacefile element.");
+        }
+        else if (!input.files) {
+            alert("This browser doesn't seem to support the `files` property of file inputs.");
+        }
+        else if (!input.files[0]) {
+            alert("Please select a file before clicking 'Load'");
+        }
+        else {
+            file = input.files[0];
+            fr = new FileReader();
+            fr.onload = function () {
+                if(current_workspace != null){
+                    current_workspace.mainWorkspace.clear();
+                    var xml = current_workspace.Xml.textToDom(fr.result);
+                    current_workspace.Xml.domToWorkspace(current_workspace.mainWorkspace, xml);
+                }
+            };
+            fr.readAsText(file, "UTF-8");
+        }
+    }
+    
+    function downloadWorkspace() {
+        if(current_workspace != null){
+            var xml = current_workspace.Xml.workspaceToDom(current_workspace.mainWorkspace);
+            var xml_text = current_workspace.Xml.domToText(xml);
+            
+            if(window.navigator.msSaveOrOpenBlob) {
+                var fileData = [xml_text];
+                blobObject = new Blob(fileData);
+                window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+            } else {
+                var a = window.document.createElement('a');
+                a.href = window.URL.createObjectURL(new Blob([xml_text], {type: 'text/xml'}));
+                a.download = 'Workspace.rbw.xml';
+                a.style.display = 'none';
+                // Append anchor to body.
+                document.body.appendChild(a);
+                a.click();
+                
+                // Remove anchor from body
+                document.body.removeChild(a);
+            }
+        }
+    }
     </script>
 </head>
 <body class="ThrowBack">
     <div id="page">
-        <h1>Workbench</h1>
-        <br/>
-        <br/>
-        
-        <iframe id="workspace1" src="./workspace.html" style="height: 1000px;width: 45%;margin-right: 5%;">
-        </iframe>
-        <iframe id="workspace2" src="./workspace.html" style="height: 1000px;width: 45%;">
-        </iframe>
-        <br/>
-        <button onclick="goWithTest();">Test</button>
-        <hr/>
-        <div style="margin: auto auto; widthL 505px; text-align: center;">
-            <iframe id="battlefield" src="./battlefield.html" style="height: 500px;width:500px;">
-            </iframe>
+        <div style="height: 5%;overflow: auto;">
+            <h1>Workbench</h1>
         </div>
-        <br/>
-        <hr/>
-        <div style="height: 500px;width: 45%; float:left; overflow: auto;">
-            <h1>JS Generated from Workspace1:</h1>
-            <pre><code id="jsResult0" style="height: 97%; width: 97%;" ></code></pre>
-
-            <h1>XML Generated from Workspace1:</h1>
-            <textarea id="xmlResult0" rows="15" cols="75" ></textarea>
+        <div style="height: 90%;overflow: auto;">
+            <div style="padding-left: 510px;position:absolute;width: 60%;">
+                <div style="height: 50px;">
+                    <form action='#' onsubmit="return false;" style="display:inline-block;">
+                        <span>Upload a Workspace</span><br/>
+                        <input type="file" id="workspacefile" />
+                        <input type="button" id="btnLoad" value="Load Workspace" onclick="loadWorkspace();" />
+                    </form>
+                    <button onclick="downloadWorkspace();">Export Workspace</button>
+                </div>
+                <iframe id="workspace1" src="./workspace.html" style="height: 475px;width: 100%;border:none;display:inline-block;">
+                </iframe>
+            </div>
+            <div style="position:absolute;width: 525px;">
+                <div style="height: 50px;">
+                    <button onclick="startSimulation();">Test</button>
+                    <button onclick="pause();">Pause</button>
+                    <button onclick="unpause();">Continue</button>
+                </div>
+                <iframe id="battlefield" src="./battlefield.html" style="height: 475px;width:475px;border:none;display:inline-block;background: url('./assets/scorched_earth.png');">
+                </iframe>
+            </div>
         </div>
-        <div style="height: 500px;width: 45%; float:right; overflow: auto;">
-            <h1>JS Generated from Workspace2:</h1>
-            <pre><code id="jsResult1" style="height: 97%; width: 97%;" ></code></pre>
-
-            <h1>XML Generated from Workspace2:</h1>
-            <textarea id="xmlResult1" rows="15" cols="75" ></textarea>
-        </div>
-        <br style="clear: both;"/>
-        <br style="clear: both;"/>
-        <br style="clear: both;"/>
-        
-        
-        <br/>
-        <hr/>
-        <br style="clear:both;"/>
-        <br style="clear:both;"/>
     </div>
 </body>
 </html>

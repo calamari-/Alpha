@@ -2,12 +2,12 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Blockly Demo: Custom RoBlockWar Blocks</title>
+  <title>RoBlockWar: Block Workspace</title>
   <script src="./js/blockly_compressed.js"></script>
   <script src="./js/blocks_compressed.js"></script>
   <script src="./js/en.js"></script>
   <script src="./js/javascript_compressed.js"></script>
-  <script src="./js/roblockwar.blocks.js"></script>
+  <script src="./js/roblockwar.dev.blocks.js"></script>
   
   
   <style>
@@ -28,17 +28,9 @@
   <script>
     function init() {
         Blockly.inject(document.body, {toolbox: document.getElementById('toolbox'), collapse: false, disable: false});
-        
-        window.parent.blocklyLoaded(Blockly);
-        if(Blockly.Index == 0){
-        var xml_text = document.getElementById('DefaultWorkSpace').outerHTML;
-        var xml = Blockly.Xml.textToDom(xml_text);
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);  
-        }
-        else{
-        var xml_text = document.getElementById('DefaultWorkSpace1').outerHTML;
-        var xml = Blockly.Xml.textToDom(xml_text);
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);  
+        Blockly.mainWorkspace.traceOn(true);
+        if(window.parent != null && window.parent.workspaceLoaded != null){
+          window.parent.workspaceLoaded(Blockly);
         }
     }
   </script>
@@ -55,6 +47,7 @@
       <block type="roblockwar_setRegister"></block>
       <block type="roblockwar_radar"></block>
       <block type="roblockwar_fire"></block>
+      <block type="roblockwar_wait"></block>
       <block type="math_number"></block>
       <block type="math_arithmetic"></block>
     </category>

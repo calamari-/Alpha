@@ -1,8 +1,14 @@
 var RoBlockWar = RoBlockWar || {};
 
+RoBlockWar.Settings = RoBlockWar.Settings || {};
+RoBlockWar.Settings.Robot = RoBlockWar.Settings.Robot || {};
+
+RoBlockWar.Settings.Robot.CannonCoolDown = 5;
+
 function RoBlockWar_Robot(processId, robotName, userCode){
   this.processId = processId;
   this.RobotPlayer = null;
+  this.RobotTurret = null;
   this.RobotName = robotName;
   this.CodeToRun = userCode;
   this.Registers = {
@@ -253,8 +259,9 @@ function RoBlockWar_Robot(processId, robotName, userCode){
   }
 }
 
-RoBlockWar_Robot.prototype.init = function(View){
-    this.RobotPlayer = View;
+RoBlockWar_Robot.prototype.init = function(body, turret){
+    this.RobotPlayer = body;
+    this.RobotTurret = turret;
 };
 
 RoBlockWar_Robot.prototype.update = function(){
@@ -268,45 +275,81 @@ RoBlockWar_Robot.prototype.update = function(){
   this.RobotPlayer.body.velocity.x = newSpeedX;
   this.RobotPlayer.body.velocity.y = newSpeedY;
   
-  if(this.RobotPlayer.body.velocity.y < 0) {
-    this.RobotPlayer.animations.play('up');
+  if(this.RobotPlayer.body.velocity.y != 0 || 
+     this.RobotPlayer.body.velocity.x != 0) {
+    this.RobotPlayer.animations.play('move');
   }
-  else if(this.RobotPlayer.body.velocity.y > 0) {
-    this.RobotPlayer.animations.play('down');
-  }
-  else if(this.RobotPlayer.body.velocity.x < 0) {
-    this.RobotPlayer.animations.play('left');
-  }
-  else if(this.RobotPlayer.body.velocity.x > 0) {
-    this.RobotPlayer.animations.play('right');
-  }
-  
-  if(this.RobotPlayer.body.velocity.y == 0 &&
-     this.RobotPlayer.body.velocity.x == 0){
+  else {
     //  Stand still
     this.RobotPlayer.animations.stop();
-    this.RobotPlayer.frame = 4;
+    this.RobotPlayer.frame = 1;
   }
+  this.RobotTurret.x = this.RobotPlayer.x;
+  this.RobotTurret.y = this.RobotPlayer.y;
+  this.RobotTurret.angle = this.Registers.getR('AIM');
+};
+
+RoBlockWar_Robot.prototype.sendRadarPulse = function (callback) {
+    var speedx = this.Registers.getR('SPEEDX');
+    var speedy = this.Registers.getR('SPEEDY');
+    this.Registers.setR('DISTANCE', 0);
+    this.Registers.setR('SPEEDY', 0);
+    this.Registers.setR('SPEEDX', 0);
+    var that = this;
+    setTimeout(function(){
+        that.Registers.setR('DISTANCE', -1);
+        that.Registers.setR('SPEEDX', speedx);
+        that.Registers.setR('SPEEDY', speedy);
+        if(callback != null){
+            callback();
+        }
+    }, 2000);
 };
 
 RoBlockWar_Robot.prototype.fireAtDistance = function (distance) {
-    if(this.RobotPlayer != null){
-        console.log('Firing at {' || distance || '}');
+    if(this.Registers.getR('COOLDOWN') <= 0){
+        var that = this;
+        this.Registers.setR('COOLDOWN', RoBlockWar.Settings.Robot.CannonCoolDown);
+        var countDown = function(){
+            that.Registers.setR('COOLDOWN', (that.Registers.getR('COOLDOWN') - 1));
+            if(this.Registers.getR('COOLDOWN') > 0){
+                setTimeout(countDown(), 1000);
+            }
+        }
+        setTimeout(countDown(), 1000);
     }
 };
 
-RoBlockWar_Robot.prototype.sendRadarPulse = function () {
-    this.Registers.setR('DISTANCE', -1);
-    return -1;
+RoBlockWar_Robot.prototype.waitFor = function (seconds, callback) {
+    setTimeout(function(){
+        if(callback != null){
+            callback();
+        }
+    }, (seconds * 1000));
 };
 
-RoBlockWar_Robot.prototype.createInterpreterInitializer = function() {
+RoBlockWar_Robot.prototype.devPause = function () {
+    this.RobotPlayer.game.DevPause(true);
+};
+
+RoBlockWar_Robot.prototype.createInterpreterInitializer = function(highlightBlock) {
     var robot = this;
     return function (interpreter, scope, helper) {
+        var highlightWrapper = function(id) {
+            id = id ? id.toString() : '';
+            return interpreter.createPrimitive(highlightBlock(id));
+        };
+        
+        var pauseWrapper = function() {
+            return interpreter.createPrimitive(robot.devPause);
+        };
+        
         interpreter.setProperty(scope, 'Registers', helper.nativeValueToInterpreter(robot.Registers));
-    //    interpreter.setProperty(scope, 'fireAtDistance', helper.nativeValueToInterpreter(robot.fireAtDistance));
+        interpreter.setProperty(scope, 'fireAtDistance', helper.nativeValueToInterpreter(robot.fireAtDistance));
         interpreter.setProperty(scope, 'sendRadarPulse', helper.nativeValueToInterpreter(robot.sendRadarPulse));
-        interpreter.setProperty(scope, 'console', helper.nativeValueToInterpreter(window.console));
+        interpreter.setProperty(scope, 'waitFor', helper.nativeValueToInterpreter(robot.waitFor));;
+        interpreter.setProperty(scope, 'highlightBlock',  helper.nativeValueToInterpreter(highlightWrapper));
+        interpreter.setProperty(scope, 'devPause',  helper.nativeValueToInterpreter(pauseWrapper));
     };
 };
 
